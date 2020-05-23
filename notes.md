@@ -13,6 +13,11 @@ crontab -e
 0 * * * * /usr/local/bin/python3 ~/Desktop/drillseargeant/src/send_message.py
  ```
 
+## Desired Features
+
+* Variety in commands to make it more interesting.
+* Record of commands executed
+
 # Version 1.0.0
 
 Add reminders to the calendar.  That's not so bad really.
