@@ -1,3 +1,11 @@
+# Next
+
+## Added
+
+* Variety to commands
+* Better setup tools for Python
+
+
 # Version 1.1.0
 
 ## Added

@@ -1,11 +1,19 @@
 import boto3
 import click
+import random
 
 session = boto3.Session(profile_name="virtual-drill-sergeant")
 sns = boto3.client("sns")
 
 def get_message():
-    return "Do 10 pushups!"
+    commands = [
+        "Do 10 pushups!",
+        "Do 20 crunches!",
+        "Do 10 diamond pushups!",
+        "Do 20 4-count flutter kicks!",
+        "Do 40 4-count side-straddle hops!",
+    ]
+    return random.choice(commands)
 
 def send_message(message, print_only):
     if print_only:
