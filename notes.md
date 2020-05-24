@@ -18,7 +18,7 @@ Create a cron job to send the message every hour.
 ```sh
 crontab -e
 # Send message at the top of every hour
-0 * * * * /usr/local/bin/python3 ~/Desktop/drillseargeant/src/send_message.py
+0 * * * * /usr/local/bin/python3 ~/Desktop/drillseargeant/src/send_message/send_message.py
  ```
 
 ## Desired Features
