@@ -15,8 +15,9 @@ pipenv run python send_message/send_message.py
 pipenv run ptw
 
 # coverage
-pipenv run coverage run --source=send_message -m pytest
-pipenv run coverate html
+pipenv run coverage run --source=send_message --omit="*test*" -m pytest
+pipenv run coverage html
+pipenv run coverage report
 open htmlcov/index.html
 
 ```

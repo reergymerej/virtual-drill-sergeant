@@ -1,10 +1,14 @@
 # Next
 
+# Version 1.2.0
+
 ## Added
 
 * Variety to commands
 * Better setup tools for Python
 
+
+![1.2.0.png](./1.2.0.png)
 
 # Version 1.1.0
 

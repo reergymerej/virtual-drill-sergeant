@@ -19,7 +19,7 @@ def send_message(message, print_only):
     if print_only:
         print(message)
     else:
-        sns.publish(
+        return sns.publish(
             PhoneNumber="+12064220423",
             Message=message
         )
