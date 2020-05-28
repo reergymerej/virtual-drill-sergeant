@@ -7,10 +7,11 @@ sns = boto3.client("sns")
 
 def get_message():
     commands = [
-        "Do 10 pushups!",
-        "Do 20 crunches!",
+        "30 second plank, go!",
         "Do 10 diamond pushups!",
+        "Do 10 pushups!",
         "Do 20 4-count flutter kicks!",
+        "Do 20 crunches!",
         "Do 40 4-count side-straddle hops!",
     ]
     return random.choice(commands)

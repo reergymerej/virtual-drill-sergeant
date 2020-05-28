@@ -1,5 +1,24 @@
 # Next
 
+
+Turn on/off with my phone.
+
+
+
+# Version 2.0.0
+
+The Python code has been added to a Lambda function.  This function can be
+triggered by a Cloud Watch event on a schedule (once an hour).  This means we
+can turn it on/off and not worry about keeping my computer on.
+
+```sh
+# enable
+aws events enable-rule --name CW_rule_cron_job
+# disable
+aws events enable-rule --name CW_rule_cron_job
+```
+
+
 # Version 1.2.0
 
 ## Added
