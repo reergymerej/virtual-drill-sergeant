@@ -1,8 +1,17 @@
-# Next
+# Version 3.0.0
 
 
 Turn on/off with my phone.
+For this, we need Lambda functions to toggle the enabled rule.
+We need API Gateway to hit the toggle functions.
 
+
+
+## Enable
+curl -i -X PUT 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/enable'
+
+## Disable
+curl -i -X PUT 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/disable'
 
 
 # Version 2.0.0
