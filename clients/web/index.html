@@ -1,0 +1,38 @@
+<html>
+  <body>
+    <h1>
+      Virtual Drill Sergeant
+    </h1>
+    <button id="enable">Enable</button>
+    <button id="disable">Disable</button>
+    <div id="output"></div>
+  </body>
+  <script>
+    (() => {
+      const message = (message) => {
+        document.getElementById('output').innerText = message
+      }
+
+      const send = (url) => fetch(url, { method: 'PUT' })
+        .then(x => x.json())
+        .then(x => message(x.body))
+        .catch((e) => {
+          console.error(e)
+          message('It did not work.')
+        })
+
+      document.getElementById('disable').addEventListener('click', () => {
+        message('disabling...')
+        const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/disable'
+        send(url)
+      })
+
+      document.getElementById('enable').addEventListener('click', () => {
+        message('enabling...')
+        const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/enable'
+        send(url)
+      })
+
+    })()
+  </script>
+</html>
