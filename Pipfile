@@ -12,6 +12,7 @@ moto = "*"
 [packages]
 boto3 = "*"
 click = "*"
+psycopg2 = "*"
 
 [requires]
 python_version = "3.7"

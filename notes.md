@@ -1,3 +1,17 @@
+# Next
+
+
+I want to be able to share this.  That means we need to support adding/removing
+data.  That means we need to save data somewhere and read it dynamically.  We'll
+also need to this for other dynamic stuff.  Let's break into this slowly by
+pulling something in like phone number.
+
+I've got my connection stuff saved in .env.
+
+I've created a Postgres instance with a test db and table for me to pull data
+from.
+
+
 # Version 3.0.0
 
 
