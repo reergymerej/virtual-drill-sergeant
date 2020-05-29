@@ -6,6 +6,7 @@ import sys
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+
 def get_connection():
     """
     Create db connection
@@ -34,7 +35,11 @@ def get_connection():
     return connection
 
 
-def main(event, context):
+def handler(event, context):
+    """
+    This function fetches content from MySQL RDS instance
+    """
+
     connection = get_connection()
 
     with connection.cursor() as cur:
@@ -49,4 +54,4 @@ def main(event, context):
     return "done"
 
 if __name__ == '__main__':
-    main(None, None)
+    handler(1, 1)
