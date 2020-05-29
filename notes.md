@@ -12,6 +12,12 @@ I've created a Postgres instance with a test db and table for me to pull data
 from.
 
 
+It was tough figuring out how to get a build that would work on AWS, but we
+found one.  We just can't use the pyscopg2 for Mac.
+
+Let's see if we can make another Lambda function that talks to the DB just to be
+sure we know how to do it.
+
 # Version 3.0.0
 
 

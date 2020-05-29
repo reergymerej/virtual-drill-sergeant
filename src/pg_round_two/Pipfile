@@ -4,14 +4,8 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
-pytest = "*"
-pytest-watch = "*"
-coverage = "*"
-moto = "*"
 
 [packages]
-boto3 = "*"
-click = "*"
 psycopg2 = "*"
 
 [requires]
