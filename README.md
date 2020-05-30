@@ -8,5 +8,10 @@ in shape?
 ## Wishlist
 
 * Better record of commands executed - workaround: copy messages from iMessage
-* Easier scheduling - workaround: add/remove the # before the crontab line
 * Interactivity
+
+
+## Notes
+
+aws s3 cp index.html s3://reergymerej.com/vds/ \
+  --acl public-read
