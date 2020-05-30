@@ -1,14 +1,14 @@
 aws lambda create-function \
-  --function-name get_status \
+  --function-name send_message \
   --runtime python3.7 \
   --role arn:aws:iam::463986597363:role/lambdavpc \
-  --handler lambda_function.main \
-  --zip-file fileb://package.zip
+  --handler send_message.lambda_handler \
+  --zip-file fileb://send_message.zip
 
 aws lambda invoke \
-  --function-name get_status \
-   out
+  --function-name send_message \
+  out
 
 aws lambda update-function-code \
-  --function-name get_status \
-  --zip-file fileb://package.zip
+  --function-name send_message \
+  --zip-file fileb://send_message.zip

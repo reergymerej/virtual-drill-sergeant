@@ -1,6 +1,7 @@
 import boto3
 import os
 import random
+from connect import get_connection
 
 def get_message():
     commands = [
@@ -14,23 +15,30 @@ def get_message():
     return random.choice(commands)
 
 def send_message(number, message):
+    print('Send "{0}" to {1}.'.format(message, number))
+
     if os.getenv('DEV'):
-        print('Send "{0}" to {1}.'.format(message, number))
         return
 
-    session = boto3.Session(profile_name="virtual-drill-sergeant")
     sns = boto3.client("sns")
     return sns.publish(
         PhoneNumber=number,
         Message=message
     )
 
+def get_number(connection):
+    cursor = connection.cursor()
+    cursor.execute("SELECT phone FROM numbers")
+    top = cursor.fetchone()
+    phone = top[0]
+    return phone
 
 def lambda_handler(event, context):
-    number = "+12064220423"
+    connection = get_connection()
+    number = get_number(connection)
     message = get_message()
     send_message(number, message)
 
 if __name__ == '__main__':
-
+    session = boto3.Session(profile_name="virtual-drill-sergeant")
     lambda_handler(None, None)

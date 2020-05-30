@@ -141,3 +141,4 @@ cython_debug/
 
 # AWS package
 *.zip
+out # used when logging lambda results
