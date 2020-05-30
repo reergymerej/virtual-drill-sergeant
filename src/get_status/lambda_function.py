@@ -15,7 +15,9 @@ def main(_event, _context):
 
     return {
         'statusCode': 200,
-        'body': json.dumps(state)
+        'body': json.dumps({
+            "status": state
+        })
     }
 
 if __name__ == '__main__':
