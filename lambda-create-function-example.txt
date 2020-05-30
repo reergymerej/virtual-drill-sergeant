@@ -1,15 +1,14 @@
 aws lambda create-function \
-  --function-name pg_round_two \
+  --function-name get_status \
   --runtime python3.7 \
   --role arn:aws:iam::463986597363:role/lambdavpc \
   --handler lambda_function.main \
   --zip-file fileb://package.zip
 
-
 aws lambda invoke \
-  --function-name pg_round_two \
+  --function-name get_status \
    out
 
 aws lambda update-function-code \
-  --function-name pg_round_two \
+  --function-name get_status \
   --zip-file fileb://package.zip
