@@ -4,9 +4,9 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+boto3 = "*"
 
 [packages]
-boto3 = "*"
 psycopg2 = "*"
 
 [requires]
