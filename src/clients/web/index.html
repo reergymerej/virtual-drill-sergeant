@@ -3,46 +3,9 @@
     <h1>
       Virtual Drill Sergeant
     </h1>
-    <button id="status">Status</button>
-    <button id="enable">Enable</button>
-    <button id="disable">Disable</button>
+    <button id="enable" disabled>Enable</button>
+    <button id="disable" disabled>Disable</button>
     <div id="output"></div>
   </body>
-  <script>
-    (() => {
-      const message = (message) => {
-        document.getElementById('output').innerText = message
-      }
-
-      const ajax = (url, method = 'GET') => fetch(url, { method })
-        .then(x => x.json())
-        .catch((e) => {
-          console.error(e)
-          message('It did not work.')
-        })
-
-      const update = (url) => ajax(url, 'PUT')
-        .then(x => message(x.message))
-
-      document.getElementById('disable').addEventListener('click', () => {
-        message('disabling...')
-        const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/disable'
-        update(url)
-      })
-
-      document.getElementById('enable').addEventListener('click', () => {
-        message('enabling...')
-        const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/enable'
-        update(url)
-      })
-
-      document.getElementById('status').addEventListener('click', () => {
-        message('Checking status...')
-        const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/'
-        ajax(url)
-        .then(x => message(x.status))
-      })
-
-    })()
-  </script>
+  <script src="./index.js"></script>
 </html>
