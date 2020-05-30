@@ -33,20 +33,16 @@ def get_connection():
     logger.info("SUCCESS: Connection to RDS instance succeeded")
     return connection
 
-
 def main(event, context):
     connection = get_connection()
 
     with connection.cursor() as cur:
-        print("Getting numbers...")
         cur.execute("select * from numbers")
         item_count = 0
         for row in cur:
             item_count += 1
             logger.info(row)
             print(row)
-
-    return "done"
 
 if __name__ == '__main__':
     main(None, None)

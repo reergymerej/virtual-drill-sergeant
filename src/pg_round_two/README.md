@@ -1,3 +1,8 @@
+## Run Locally
+
+```sh
+pipenv run python lambda_function.py
+```
 
 ## Build Steps
 
@@ -11,14 +16,14 @@ pipenv lock -r > requirements.txt
 pip install -r requirements.txt --no-deps -t build
 
 # replace the AWS version
-cp ../../psycopg2 ./build/
+cp -r ../../psycopg2 ./build/
 
 # add source
-cp *.py .
+cp *.py ./build/
 
 # create package
 cd build
-rm package.zip
+rm ../package.zip
 zip -r ../package.zip .
 ```
 
@@ -32,11 +37,11 @@ aws lambda create-function \
   --handler lambda_function.main \
   --zip-file fileb://package.zip
 
+aws lambda update-function-code \
+  --function-name pg_round_two \
+  --zip-file fileb://package.zip
 
 aws lambda invoke \
   --function-name pg_round_two \
    out
 
-aws lambda update-function-code \
-  --function-name pg_round_two \
-  --zip-file fileb://package.zip

@@ -140,4 +140,4 @@ cython_debug/
 
 
 # AWS package
-package.zip
+*.zip
