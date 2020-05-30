@@ -1,27 +1,13 @@
-## Install
+# Virtual Drill Sergeant
 
-```sh
-pipenv install
-```
+Wouldn't it be cool if a DS could text you throughout the day to help you stay
+in shape?
 
-## Run
 
-```sh
-pipenv run python send_message/send_message.py
-```
 
-```sh
-# run tests
-pipenv run ptw
+## Wishlist
 
-# coverage
-pipenv run coverage run --source=send_message --omit="*test*" -m pytest
-pipenv run coverage html
-pipenv run coverage report
-open htmlcov/index.html
-
-```
-
-# Send message at the top of every hour
-0 * * * * /usr/local/bin/python3 ~/Desktop/drillseargeant/send_message/send_message.py
-
+* Better record of commands executed - workaround: copy messages from iMessage
+* Easier scheduling - workaround: add/remove the # before the crontab line
+* Interactivity
+* Update web client to get current status
