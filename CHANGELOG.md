@@ -1,23 +1,18 @@
 # Next
 
 
-I want to be able to share this.  That means we need to support adding/removing
-data.  That means we need to save data somewhere and read it dynamically.  We'll
-also need to this for other dynamic stuff.  Let's break into this slowly by
-pulling something in like phone number.
+# 3.1.0
 
-I've got my connection stuff saved in .env.
+## Added
 
-I've created a Postgres instance with a test db and table for me to pull data
-from.
+* Status check on web client to see if the drill sergeant is on or off
+* A couple new commands
 
+## Changed
 
-It was tough figuring out how to get a build that would work on AWS, but we
-found one.  We just can't use the pyscopg2 for Mac.
-
-Let's see if we can make another Lambda function that talks to the DB just to be
-sure we know how to do it.
-
+* Reorganized src
+* Changed to send_message lambda
+* Pulling number and commands from DB
 
 
 
