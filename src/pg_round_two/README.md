@@ -16,7 +16,7 @@ pipenv lock -r > requirements.txt
 pip install -r requirements.txt --no-deps -t build
 
 # replace the AWS version
-cp -r ../../psycopg2 ./build/
+cp -r ../../lib/psycopg2 ./build/
 
 # add source
 cp *.py ./build/
