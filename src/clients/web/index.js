@@ -1,6 +1,9 @@
 (() => {
+  const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
+  const el = (id) => document.getElementById(id)
+
   const message = (message) => {
-    document.getElementById('output').innerText = message
+    el('output').innerText = message
     return message
   }
 
@@ -13,7 +16,7 @@
 
   const checkStatus = () => {
     message('Checking status...')
-    const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/'
+    const url = apiUrl
     ajax(url)
       .then(x => message(x.status))
       .then((status) => {
@@ -30,26 +33,26 @@
     .then(checkStatus)
 
   const disable = (id) => {
-    document.getElementById(id).disabled = true
+    el(id).disabled = true
   }
 
   const enable = (id) => {
-    document.getElementById(id).disabled = false
+    el(id).disabled = false
   }
 
-  document.getElementById('disable').addEventListener('click', () => {
-    disable('disable')
-    message('disabling...')
-    const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/disable'
-    update(url)
-  })
+  const getActionClickHandler = (action, messageText) => () => {
+    disable(action)
+    message(messageText)
+    const url = `${apiUrl}/${action}`
+    return update(url)
+  }
 
-  document.getElementById('enable').addEventListener('click', () => {
-    disable('enable')
-    message('enabling...')
-    const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/enable'
-    update(url)
-  })
+  const enableClickHandler = getActionClickHandler('disable', 'disabling...')
+  const disbleClickHandler = getActionClickHandler('enable', 'enabling...')
+
+  enableClickHandler()
+  el('disable').addEventListener('click', enableClickHandler)
+  el('enable').addEventListener('click', disbleClickHandler)
 
   checkStatus()
 })()
