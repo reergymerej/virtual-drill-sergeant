@@ -3,6 +3,7 @@
     <h1>
       Virtual Drill Sergeant
     </h1>
+    <button id="status">Status</button>
     <button id="enable">Enable</button>
     <button id="disable">Disable</button>
     <div id="output"></div>
@@ -13,7 +14,7 @@
         document.getElementById('output').innerText = message
       }
 
-      const send = (url) => fetch(url, { method: 'PUT' })
+      const send = (url, method = 'PUT') => fetch(url, { method })
         .then(x => x.json())
         .then(x => message(x.body))
         .catch((e) => {
@@ -31,6 +32,12 @@
         message('enabling...')
         const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/enable'
         send(url)
+      })
+
+      document.getElementById('status').addEventListener('click', () => {
+        message('Checking status...')
+        const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/'
+        send(url, 'GET')
       })
 
     })()
