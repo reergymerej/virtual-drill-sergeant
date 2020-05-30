@@ -14,30 +14,33 @@
         document.getElementById('output').innerText = message
       }
 
-      const send = (url, method = 'PUT') => fetch(url, { method })
+      const ajax = (url, method = 'GET') => fetch(url, { method })
         .then(x => x.json())
-        .then(x => message(x.body))
         .catch((e) => {
           console.error(e)
           message('It did not work.')
         })
 
+      const update = (url) => ajax(url, 'PUT')
+        .then(x => message(x.message))
+
       document.getElementById('disable').addEventListener('click', () => {
         message('disabling...')
         const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/disable'
-        send(url)
+        update(url)
       })
 
       document.getElementById('enable').addEventListener('click', () => {
         message('enabling...')
         const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/enable'
-        send(url)
+        update(url)
       })
 
       document.getElementById('status').addEventListener('click', () => {
         message('Checking status...')
         const url = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/'
-        send(url, 'GET')
+        ajax(url)
+        .then(x => message(x.status))
       })
 
     })()

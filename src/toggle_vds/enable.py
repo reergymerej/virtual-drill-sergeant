@@ -8,8 +8,7 @@ def lambda_handler(_event, _context):
         Name='CW_rule_cron_job'
     )
     return {
-        'statusCode': 200,
-        'body': json.dumps('VDS Enabled')
+        'message': 'VDS Enabled',
     }
 
 if __name__ == '__main__':
