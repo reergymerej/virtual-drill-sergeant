@@ -14,10 +14,7 @@ def main(_event, _context):
     print("{0} is {1}.".format(rule_name, state))
 
     return {
-        'statusCode': 200,
-        'body': json.dumps({
-            "status": state
-        })
+        "status": state
     }
 
 if __name__ == '__main__':
