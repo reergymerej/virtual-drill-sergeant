@@ -1,6 +1,8 @@
 (() => {
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
   const el = (id) => document.getElementById(id)
+  const buttonDisable = el('disable')
+  const buttonEnable = el('enable')
 
   const message = (message) => {
     el('output').innerText = message
@@ -14,45 +16,59 @@
       message('It did not work.')
     })
 
+  const updateButtonByStatus = (status) => {
+    enableElement(status === 'DISABLED'
+      ? buttonEnable
+      : buttonDisable
+    )
+  }
+
   const checkStatus = () => {
     message('Checking status...')
-    const url = apiUrl
-    ajax(url)
+    return ajax(apiUrl)
       .then(x => message(x.status))
-      .then((status) => {
-        if (status === 'DISABLED') {
-          enable('enable')
-        } else {
-          enable('disable')
-        }
-      })
+      .then(updateButtonByStatus)
   }
 
   const update = (url) => ajax(url, 'PUT')
     .then(x => message(x.message))
     .then(checkStatus)
 
-  const disable = (id) => {
-    el(id).disabled = true
+  const disableElement = (element) => {
+    element.disabled = true
   }
 
-  const enable = (id) => {
-    el(id).disabled = false
+  const enableElement = (element) => {
+    element.disabled = false
   }
 
-  const getActionClickHandler = (action, messageText) => () => {
-    disable(action)
+  const getActionClickHandler = ({
+    action,
+    button,
+    messageText,
+    url,
+  }) => () => {
+    disableElement(button)
     message(messageText)
-    const url = `${apiUrl}/${action}`
-    return update(url)
+    return action(url)
   }
 
-  const enableClickHandler = getActionClickHandler('disable', 'disabling...')
-  const disbleClickHandler = getActionClickHandler('enable', 'enabling...')
+  const enableClickHandler = getActionClickHandler({
+    action: update,
+    button: buttonEnable,
+    messageText: 'enabling...',
+    url: `${apiUrl}/enable`,
+  })
 
-  enableClickHandler()
-  el('disable').addEventListener('click', enableClickHandler)
-  el('enable').addEventListener('click', disbleClickHandler)
+  const disableClickHandler = getActionClickHandler({
+    action: update,
+    button: buttonDisable,
+    messageText: 'disabling...',
+    url: `${apiUrl}/disable`,
+  })
+
+  buttonEnable.addEventListener('click', enableClickHandler)
+  buttonDisable.addEventListener('click', disableClickHandler)
 
   checkStatus()
 })()
