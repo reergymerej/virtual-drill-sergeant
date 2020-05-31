@@ -1,6 +1,9 @@
 # Next
 
 
+
+# 3.2.0
+
 ## Changed
 
 * Check status in web client automatically before/after changes
