@@ -3,9 +3,11 @@
   const el = (id) => document.getElementById(id)
   const buttonDisable = el('disable')
   const buttonEnable = el('enable')
+  const buttonLog = el('log')
+  const output = el('output')
 
   const message = (message) => {
-    el('output').innerText = message
+    output.innerText = message
     return message
   }
 
@@ -71,4 +73,19 @@
   buttonDisable.addEventListener('click', disableClickHandler)
 
   checkStatus()
+
+  const getLog = () => {
+    const url = `${apiUrl}/logs`
+    return ajax(url)
+  }
+
+  const logRowToText = x => {
+    return x[1]
+  }
+
+  buttonLog.addEventListener('click', async () => {
+    const log = await getLog()
+    const text = log.map(logRowToText).join('\n')
+    output.innerText = text
+  })
 })()
