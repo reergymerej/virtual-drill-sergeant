@@ -1,0 +1,30 @@
+{
+  "requestContext": {
+    "approximateInvokeCount": 1,
+    "condition": "Success",
+    "functionArn": "arn:aws:lambda:us-east-1:463986597363:function:send_message:$LATEST",
+    "requestId": "d0479935-59b9-4f87-b444-33586662d58b"
+  },
+  "requestPayload": {
+    "account": "463986597363",
+    "detail": {},
+    "detail-type": "Scheduled Event",
+    "id": "14b38428-e055-200b-2983-3d1370d1ac21",
+    "region": "us-east-1",
+    "resources": [
+      "arn:aws:events:us-east-1:463986597363:rule/CW_rule_cron_job"
+    ],
+    "source": "aws.events",
+    "time": "2020-05-31T17:15:56Z",
+    "version": "0"
+  },
+  "responseContext": {
+    "executedVersion": "$LATEST",
+    "statusCode": 200
+  },
+  "responsePayload": {
+    "message": 5
+  },
+  "timestamp": "2020-05-31T17:16:20.126Z",
+  "version": "1.0"
+}

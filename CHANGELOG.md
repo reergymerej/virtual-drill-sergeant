@@ -1,18 +1,14 @@
 # Next
 
-I'm not sure how I want to surface the record of past commands, but let's start
-by recording them.
-
-x. create new table
-1. create local script to add record
-1. add lambda to add record
-1. pass command from send_message to recorder
-
-
 
 ## Changed
 
 * Check status in web client automatically before/after changes
+
+
+## Added
+
+* Record issued commands
 
 
 
