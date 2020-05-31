@@ -24,6 +24,7 @@ def lambda_handler(event, context):
         insert_command(command_id)
     except psycopg2.errors.ForeignKeyViolation as e:
         print("The command_id {0} is not valid.".format(command_id))
+        raise(e)
     except Exception as e:
         print("There was an error inserting the record.")
         print(e)
