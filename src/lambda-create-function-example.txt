@@ -1,0 +1,14 @@
+aws lambda create-function \
+  --function-name add_record \
+  --runtime python3.7 \
+  --role arn:aws:iam::463986597363:role/lambdavpc \
+  --handler add_record.lambda_handler \
+  --zip-file fileb://add_record.zip
+
+aws lambda invoke \
+  --function-name add_record \
+  out
+
+aws lambda update-function-code \
+  --function-name add_record \
+  --zip-file fileb://add_record.zip
