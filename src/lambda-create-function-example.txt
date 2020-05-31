@@ -1,14 +1,14 @@
 aws lambda create-function \
-  --function-name add_record \
+  --function-name get_log \
   --runtime python3.7 \
   --role arn:aws:iam::463986597363:role/lambdavpc \
-  --handler add_record.lambda_handler \
-  --zip-file fileb://add_record.zip
+  --handler get_log.lambda_handler \
+  --zip-file fileb://get_log.zip
 
 aws lambda invoke \
-  --function-name add_record \
+  --function-name get_log \
   out
 
 aws lambda update-function-code \
-  --function-name add_record \
-  --zip-file fileb://add_record.zip
+  --function-name get_log \
+  --zip-file fileb://get_log.zip

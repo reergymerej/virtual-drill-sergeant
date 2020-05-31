@@ -1,5 +1,9 @@
 # Next
 
+How do we view the log of commands?
+* stub lambda data
+* new api gateway resource and method
+* pull from client
 
 
 # 3.2.0
