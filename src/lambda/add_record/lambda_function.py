@@ -15,8 +15,8 @@ def insert_command(id):
     return db.insert(query)
 
 def get_command_id_from_event(event):
-    print(event)
-    return 999
+    responsePayload = event["responsePayload"]
+    return responsePayload["message"]
 
 def lambda_handler(event, context):
     command_id = get_command_id_from_event(event)
