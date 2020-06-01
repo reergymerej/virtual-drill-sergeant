@@ -1,8 +1,4 @@
-import json
-import boto3
 import db
-import os
-import psycopg2
 
 def get_log():
     return db.all( """

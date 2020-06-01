@@ -29,3 +29,8 @@ cp *.py ./build/
 cd build
 rm ../package.zip
 zip -r ../package.zip .
+```
+
+
+Postgres/ has been created as a layer.  Use that in the Lambda function so you
+don't have to keep uploading it.
