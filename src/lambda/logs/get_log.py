@@ -1,4 +1,5 @@
 import db
+import json
 
 def get_log():
     return db.all( """
