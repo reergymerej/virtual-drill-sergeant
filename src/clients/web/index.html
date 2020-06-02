@@ -2,15 +2,57 @@
   <head>
     <title>VDS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html {
+      font-family: sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      background: bisque;
+    }
+    .center {
+      text-align: center;
+    }
+    .padding {
+      padding: 1em;
+      margin: 0;
+    }
+    .mono {
+      font-family: monospace;
+    }
+    .green {
+      color: #251e08;
+      /*color: darkgreen;*/
+    }
+    button {
+      text-transform: uppercase;
+      border: 0;
+      border-radius: 0.4em;
+      /*background: #27bf3b;*/
+      background: #06460e;
+      color: white;
+      font-weight: bold;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+    }
+    button[disabled] {
+      opacity: 0.3;
+      color: #69ab62;
+      cursor: auto;
+    }
+  </style>
   </head>
   <body>
-    <h1>
+    <h1 class="center padding green">
       Virtual Drill Sergeant
     </h1>
-    <button id="enable" disabled>Enable</button>
-    <button id="disable" disabled>Disable</button>
-    <button id="log">View Logs</button>
-    <div id="output"></div>
+    <div class="center">
+      <button id="enable" class="padding" disabled>Enable</button>
+      <button id="disable" class="padding" disabled>Disable</button>
+      <button id="log" class="padding">View Logs</button>
+    </div>
+    <div id="output" class="mono center padding green"></div>
   </body>
   <script src="./index.js"></script>
 </html>

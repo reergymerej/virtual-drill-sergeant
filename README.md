@@ -6,7 +6,6 @@ in shape?
 
 ## Wishlist
 
-* Better record of commands executed - workaround: copy messages from iMessage
 * Interactivity
 
 
