@@ -12,3 +12,13 @@ aws lambda invoke \
 aws lambda update-function-code \
   --function-name get_log \
   --zip-file fileb://get_log.zip
+
+
+aws cloudfront list-distributions
+
+aws cloudfront list-invalidations \
+  --distribution-id E3FIP03GLPOWQS
+
+aws cloudfront create-invalidation \
+  --distribution-id E3FIP03GLPOWQS \
+  --paths "/*"
