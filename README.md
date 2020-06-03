@@ -6,8 +6,12 @@ in shape?
 
 ## Wishlist
 
-* Interactivity
-
+* confirm when a command is finished
+* log only finished commands
+* segment log by days
+* log events by phone number
+* turn notifications on/off by phone number
+* share db across lambda functions to run locally
 
 ## Notes
 

@@ -5,7 +5,8 @@ def get_log():
     return db.all( """
         select
             command_log.id,
-            commands.text
+            commands.text,
+            command_log.executed
         from command_log
         inner join commands on command_log.command_id = commands.id
         order by command_log.created_at desc
