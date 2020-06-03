@@ -79,8 +79,12 @@
     return ajax(url)
   }
 
-  const logRowToText = x => {
-    return x[1]
+  const logRowToText = row => {
+    const [, text, executed] = row
+    const finished = executed
+      ? ' (done)'
+      : ''
+    return `${text}${finished}`
   }
 
   buttonLog.addEventListener('click', async () => {
