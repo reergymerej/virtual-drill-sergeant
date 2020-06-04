@@ -1,9 +1,7 @@
 # Next
 
-How do we view the log of commands?
-* stub lambda data
-* new api gateway resource and method
-* pull from client
+* Provide log of commands
+* Indicate in client which commands were completed
 
 
 # 3.2.0
