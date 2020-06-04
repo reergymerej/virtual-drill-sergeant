@@ -1,10 +1,11 @@
 (() => {
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
-  const el = (id) => document.getElementById(id)
-  const buttonDisable = el('disable')
-  const buttonEnable = el('enable')
-  const buttonLog = el('log')
-  const output = el('output')
+  const getEl = (id) => document.getElementById(id)
+  const buttonDisable = getEl('disable')
+  const buttonEnable = getEl('enable')
+  const buttonLog = getEl('log')
+  const output = getEl('output')
+  const log = getEl('logTable')
 
   const message = (message) => {
     output.innerText = message
@@ -79,17 +80,65 @@
     return ajax(url)
   }
 
-  const logRowToText = row => {
-    const [, text, executed] = row
-    const finished = executed
-      ? ' (done)'
-      : ''
-    return `${text}${finished}`
+  const el = (tag) => document.createElement(tag)
+
+  const createRow = (cells) => {
+    const row = el('tr')
+    cells.forEach(value => {
+      const cell = el('td')
+      if (typeof value !== 'object') {
+        cell.innerText = value
+      } else {
+        cell.appendChild(value)
+      }
+      row.appendChild(cell)
+    })
+    return row
+  }
+
+  const getCompleteButton = (id) => {
+    const button = el('button')
+    button.innerText = 'Finish'
+    const afterHandler = () => {
+      button.removeEventListener('click', clickHandler)
+    }
+    const clickHandler = async () => {
+      const url = `${apiUrl}/logs/${id}/update`
+      console.log(id, url)
+      const result = await ajax(url, 'PUT')
+      console.log({result})
+      afterHandler()
+    }
+    button.addEventListener('click', clickHandler)
+    return button
+  }
+
+  const dataRowToCells = ([id, text, complete]) => {
+    return [
+      text,
+      complete
+        ? '+'
+        : getCompleteButton(id)
+    ]
+  }
+
+  const addRowToTable = table => cells => {
+    const row = createRow(cells)
+    table.appendChild(row)
+  }
+
+  const createLog = (log) => {
+    const table = el('table')
+    log
+      .map(dataRowToCells)
+      .forEach(addRowToTable(table))
+    return table
   }
 
   buttonLog.addEventListener('click', async () => {
-    const log = await getLog()
-    const text = log.map(logRowToText).join('\n')
-    output.innerText = text
+    const logData = await getLog()
+    // const text = log.map(logRowToText).join('\n')
+    log.innerHtml = ''
+    log.appendChild(createLog(logData))
   })
 })()
