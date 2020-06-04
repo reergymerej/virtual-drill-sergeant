@@ -1,7 +1,6 @@
-import boto3
 import db
 import os
-import psycopg2
+import json
 
 def update_log(id):
     query = """
@@ -24,10 +23,12 @@ def lambda_handler(event, context):
         update_log(command_id)
         return {
             "isBase64Encoded": "false",
-            "statusCode": 204,
-            "headers": {},
-            "multiValueHeaders": {},
-            "body": ""
+            "statusCode": 200, # 204 won't send body to api gateway for some reason
+            "headers": {
+                "Access-Control-Allow-Origin":"*",
+                "Content-Type": "application/json"
+            },
+            "body": json.dumps({})
         }
 
     except Exception as e:

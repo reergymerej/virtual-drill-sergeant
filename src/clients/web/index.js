@@ -101,12 +101,13 @@
     button.innerText = 'Finish'
     const afterHandler = () => {
       button.removeEventListener('click', clickHandler)
+      button.parentNode.innerText = '+'
+
     }
     const clickHandler = async () => {
+      message('updating...')
       const url = `${apiUrl}/logs/${id}/update`
-      console.log(id, url)
-      const result = await ajax(url, 'PUT')
-      console.log({result})
+      await ajax(url, 'PUT')
       afterHandler()
     }
     button.addEventListener('click', clickHandler)
@@ -137,7 +138,6 @@
 
   buttonLog.addEventListener('click', async () => {
     const logData = await getLog()
-    // const text = log.map(logRowToText).join('\n')
     log.innerHtml = ''
     log.appendChild(createLog(logData))
   })

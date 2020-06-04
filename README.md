@@ -10,6 +10,9 @@ in shape?
 
   add to ui
 
+* Use CloudFormation to create a stack for this.  This will help me learn AWS
+    and possibly allow for whitelabeling this idea.
+
 
 
 
