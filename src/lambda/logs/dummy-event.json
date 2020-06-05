@@ -23,7 +23,8 @@
     "statusCode": 200
   },
   "responsePayload": {
-    "message": 5
+    "message": 5,
+    "phone": 999
   },
   "timestamp": "2020-05-31T17:16:20.126Z",
   "version": "1.0"
