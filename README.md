@@ -6,7 +6,8 @@ in shape?
 
 ## Wishlist
 
-* turn notifications on/off by phone number
+* Make it easier to mark a command as completed.
+  text back or click a link in the message
 
 * segment log by days
 * share db across lambda functions to run locally
