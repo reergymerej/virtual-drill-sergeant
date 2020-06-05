@@ -1,6 +1,7 @@
 (() => {
   const regex = /id=(.+?)/
-  const phone = regex.exec(window.location.search)[1]
+  const result = regex.exec(window.location.search)
+  const phone = result && result[1] || 1
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
   const getEl = (id) => document.getElementById(id)
   const buttonDisable = getEl('disable')
