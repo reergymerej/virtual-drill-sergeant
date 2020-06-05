@@ -1,7 +1,10 @@
 # Next
 
+# 4.0.0
+
 * Provide log of commands
 * Indicate in client which commands were completed
+* Segment into two different groups
 
 
 # 3.2.0
