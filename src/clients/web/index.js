@@ -79,7 +79,7 @@
   checkStatus()
 
   const getLog = () => {
-    const url = `${apiUrl}/logs`
+    const url = `${apiUrl}/${phone}/logs`
     return ajax(url)
   }
 
