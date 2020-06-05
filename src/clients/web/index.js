@@ -1,4 +1,6 @@
 (() => {
+  const regex = /id=(.+?)/
+  const phone = regex.exec(window.location.search)[1]
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
   const getEl = (id) => document.getElementById(id)
   const buttonDisable = getEl('disable')
@@ -28,7 +30,7 @@
 
   const checkStatus = () => {
     message('Checking status...')
-    return ajax(apiUrl)
+    return ajax(`${apiUrl}/${phone}`)
       .then(x => message(x.status))
       .then(updateButtonByStatus)
   }
@@ -60,14 +62,14 @@
     action: update,
     button: buttonEnable,
     messageText: 'enabling...',
-    url: `${apiUrl}/enable`,
+    url: `${apiUrl}/enable/${phone}`,
   })
 
   const disableClickHandler = getActionClickHandler({
     action: update,
     button: buttonDisable,
     messageText: 'disabling...',
-    url: `${apiUrl}/disable`,
+    url: `${apiUrl}/disable/${phone}`,
   })
 
   buttonEnable.addEventListener('click', enableClickHandler)
