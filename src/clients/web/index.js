@@ -9,6 +9,7 @@
         }
       }, {})
     }
+    return {}
   }
   const query = getQuery()
   const phone = query.phone || '1'
