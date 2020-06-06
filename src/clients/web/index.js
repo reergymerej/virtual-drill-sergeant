@@ -43,7 +43,7 @@
   const checkStatus = () => {
     message('Checking status...')
     return ajax(`${apiUrl}/${phone}`)
-      .then(updateButtonByStatus)
+      .then(resp => updateButtonByStatus(resp.status))
       .then(() => message(''))
   }
 
