@@ -10,7 +10,8 @@ def get_command():
 
 def get_message(command, phone_id, command_log_id):
     return """{0}
-http://vds.reergymerej.com/?id={1}&log-id={2}""".format(command, phone_id, command_log_id)
+complete: http://vds.reergymerej.com/?id={1}&log-id={2}
+disable: http://vds.reergymerej.com/?id={1}""".format(command, phone_id, command_log_id)
 
 def get_phone(phone_id):
     return db.one("SELECT id, phone FROM numbers WHERE id = {0}".format(phone_id))

@@ -1,7 +1,17 @@
-(() => {
-  const regex = /id=(.+?)/
-  const result = regex.exec(window.location.search)
-  const phone = result && result[1] || 1
+(async () => {
+  const getQuery = () => {
+    if (window.location.search) {
+      return window.location.search.substring(1).split('&').reduce((acc, pair) => {
+        const [key, value] = pair.split('=')
+        return {
+          ...acc,
+          [key]: value,
+        }
+      }, {})
+    }
+  }
+  const query = getQuery()
+  const phone = query.phone || '1'
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
   const getEl = (id) => document.getElementById(id)
   const buttonDisable = getEl('disable')
@@ -32,8 +42,8 @@
   const checkStatus = () => {
     message('Checking status...')
     return ajax(`${apiUrl}/${phone}`)
-      .then(x => message(x.status))
       .then(updateButtonByStatus)
+      .then(() => message(''))
   }
 
   const update = (url) => ajax(url, 'PUT')
@@ -95,6 +105,15 @@
     return row
   }
 
+  const getCompleteUrl = (logId) => `${apiUrl}/logs/${logId}/update`
+
+  const completeTask = async (logId) => {
+    message('Completing task...')
+    const url = getCompleteUrl(logId)
+    await ajax(url, 'PUT')
+    message('Task completed')
+  }
+
   const getCompleteButton = (id) => {
     const button = el('button')
     button.innerText = 'Finish'
@@ -104,9 +123,7 @@
 
     }
     const clickHandler = async () => {
-      message('updating...')
-      const url = `${apiUrl}/logs/${id}/update`
-      await ajax(url, 'PUT')
+      await completeTask(id)
       afterHandler()
     }
     button.addEventListener('click', clickHandler)
@@ -136,15 +153,20 @@
   }
 
   const loadLog = async () => {
+    disableElement(buttonLog)
+    log.innerHTML = ''
     const logData = await getLog()
-    log.innerHtml = ''
     log.appendChild(createLog(logData))
+    enableElement(buttonLog)
   }
 
+  const logId = query['log-id']
+  if (logId) {
+    await completeTask(logId)
+  }
+  await checkStatus()
+  await loadLog()
   buttonLog.addEventListener('click', loadLog)
   buttonEnable.addEventListener('click', enableClickHandler)
   buttonDisable.addEventListener('click', disableClickHandler)
-
-  checkStatus()
-  loadLog()
 })()

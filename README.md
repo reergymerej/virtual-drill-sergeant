@@ -7,10 +7,7 @@ in shape?
 ## Wishlist
 
 * Make it easier to mark a command as completed.
-  click a link in the message
-    full link to vds.reergymerej.com
-
-  text back or
+  text back a word to mark complete
 
 * segment log by days
 * share db across lambda functions to run locally

@@ -1,5 +1,8 @@
 # Next
 
+* Include links in message to open web app and mark complete
+
+
 # 4.0.0
 
 * Provide log of commands
