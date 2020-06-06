@@ -1,4 +1,3 @@
-# TODO: dedupe
 import random as get_random
 from connect import get_connection
 
@@ -6,7 +5,7 @@ def query(fn, sql):
     connection = get_connection()
     cursor = connection.cursor()
 
-    cursor.execute(sql)
+    result = cursor.execute(sql)
     if fn:
         result = fn(cursor)
 
@@ -29,5 +28,9 @@ def random(sql):
     return get_random.choice(results)
 
 def insert(sql):
+    fn = lambda cursor: cursor.fetchone()[0]
+    return query(fn, sql)
+
+def delete(sql):
     fn = lambda cursor: None
     return query(fn, sql)
