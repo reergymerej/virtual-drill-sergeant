@@ -12,7 +12,7 @@
     return {}
   }
   const query = getQuery()
-  const phone = query.phone || '1'
+  const phone = query.id || '1'
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
   const getEl = (id) => document.getElementById(id)
   const buttonDisable = getEl('disable')
