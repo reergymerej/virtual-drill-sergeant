@@ -73,10 +73,6 @@
     url: `${apiUrl}/disable/${phone}`,
   })
 
-  buttonEnable.addEventListener('click', enableClickHandler)
-  buttonDisable.addEventListener('click', disableClickHandler)
-
-  checkStatus()
 
   const getLog = () => {
     const url = `${apiUrl}/${phone}/logs`
@@ -139,9 +135,16 @@
     return table
   }
 
-  buttonLog.addEventListener('click', async () => {
+  const loadLog = async () => {
     const logData = await getLog()
     log.innerHtml = ''
     log.appendChild(createLog(logData))
-  })
+  }
+
+  buttonLog.addEventListener('click', loadLog)
+  buttonEnable.addEventListener('click', enableClickHandler)
+  buttonDisable.addEventListener('click', disableClickHandler)
+
+  checkStatus()
+  loadLog()
 })()
