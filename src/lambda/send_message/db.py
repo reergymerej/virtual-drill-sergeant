@@ -1,19 +1,36 @@
 import random as get_random
 from connect import get_connection
 
-connection = get_connection()
-
-def query(sql):
+def query(fn, sql):
+    connection = get_connection()
     cursor = connection.cursor()
-    cursor.execute(sql)
-    return cursor
+
+    result = cursor.execute(sql)
+    if fn:
+        result = fn(cursor)
+
+    connection.commit()
+    connection.close()
+    cursor.close()
+    return result
 
 def one(sql):
-    return query(sql).fetchone()
+    fn = lambda cursor: cursor.fetchone()
+    return query(fn, sql)
 
 def all(sql):
-    return query(sql).fetchall()
+    fn = lambda cursor: cursor.fetchall()
+    return query(fn, sql)
 
 def random(sql):
-    results = all(sql)
+    fn = lambda cursor: cursor.fetchall()
+    results = query(fn, sql)
     return get_random.choice(results)
+
+def insert(sql):
+    fn = lambda cursor: cursor.fetchone()[0]
+    return query(fn, sql)
+
+def delete(sql):
+    fn = lambda cursor: None
+    return query(fn, sql)
