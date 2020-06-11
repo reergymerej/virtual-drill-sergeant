@@ -1,0 +1,69 @@
+-- INSERT INTO "public"."numbers"("phone") VALUES('+13349959382') RETURNING "id", "phone";
+
+select * from numbers;
+-- delete from numbers where id = 2;
+
+select * from commands;
+-- delete from commands;
+
+INSERT INTO commands (text) VALUES
+    ('30 second plank, go!'),
+    ('Do 10 diamond pushups!'),
+    ('Do 10 pushups!'),
+    ('Do 20 4-count flutter kicks!'),
+    ('Do 20 crunches!'),
+    ('Do 40 4-count side-straddle hops!');
+
+select * from commands;
+select * from command_log
+order by created_at desc
+;
+
+-- update command_log set executed = TRUE
+-- where id = 66
+--;
+
+-- insert into command_log(command_id) values (8);
+-- delete from command_log;
+
+select
+	command_log.id,
+	command_log.created_at,
+	numbers.phone,
+	numbers.id,
+	commands.text,
+	command_log.executed
+from command_log
+inner join commands on command_log.command_id = commands.id
+left join numbers on command_log.number_id = numbers.id
+-- where numbers.id = 3
+order by command_log.created_at desc
+;
+
+
+select * from numbers;
+update command_log
+set number_id = 1
+;
+
+select * from commands;
+INSERT INTO command_log(command_id, number_id) VALUES (4, 3)
+RETURNING id
+;
+
+select * 
+from command_log 
+where number_id = 1
+order by id desc
+;
+
+-- delete 
+-- from command_log 
+-- where number_id = 1
+-- ;
+
+select *
+from commands
+where not disabled
+;
+
