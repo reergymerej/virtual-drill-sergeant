@@ -4,6 +4,21 @@ Wouldn't it be cool if a DS could text you throughout the day to help you stay
 in shape?
 
 
+## User Manual
+
+To disable commands that may be issued, locate the "command_log_id" and contact
+support.  You're not a real user, so I don't need to tell you how to do that.
+Just text me.
+
+To find your "command_log_id,"
+
+### From a Message
+
+![command log id from message](./resources/command_log_id_message.png)
+
+Look for the "log-id" part of the url.
+
+
 ## Wishlist
 
 

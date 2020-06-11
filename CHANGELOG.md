@@ -1,5 +1,25 @@
 # Next
 
+# 4.0.2
+
+To improve the disable command flow:
+* Users will be _empowered_ to gather some of the information themselves.  This
+    will reduce the feeling of helplessness.
+* Queries will be modified to accept data from the users to make the update
+    process _faster_ once support is involved.
+
+  ```sql
+  UPDATE commands
+  SET disabled = FALSE
+  WHERE id IN (
+    SELECT command_id
+    FROM command_log
+    WHERE command_log.id = 184
+  )
+  RETURNING id, text, disabled
+  ;
+  ```
+
 # 4.0.1
 
 
