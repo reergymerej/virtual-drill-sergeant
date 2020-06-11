@@ -6,31 +6,19 @@
 I hurt my leg, so I want to disable the jumping jacks command for a little
 while.
 
-## MVP
-Provide SQL to turn it on/off.
-* Requires adding an on/off flag.
-* This doesn't actually do anything yet, just makes you feel like you're in
-    control.
+### MVP
+
+Call support. Support can find the command and turn it on/off.  Disabled
+commands will not be included in future commands sent to the user.
 
     ```sql
     UPDATE commands
-    SET disabled = true
+    SET disabled = TRUE
     WHERE id = 9
+    RETURNING text, disabled
     ;
     ```
-
-
-Update the service that gets commands to ignore diabled commands.
-
-  ```sql
-    SELECT id, text
-    FROM commands
-    WHERE NOT disabled
-    ;
-    ```
-
-We need to handle the situation where everything is disabled.
-
+If all commands are disabled, you will receive no messages.
 
 
 
