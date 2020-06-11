@@ -6,8 +6,20 @@ in shape?
 
 ## Wishlist
 
-* Use shortened urls in text messages.
 
+* Control over which commands are issued
+  select screen to decide on exercises I'd like to see that I can change at any
+  time
+
+* More flexibility over scheduling (ex: every 30 minutes after 6 pm)
+
+* Hierarchy or categorization of commands
+  exercise type and severity
+
+
+
+
+* Use shortened urls in text messages.
 * Make it easier to mark a command as completed.
   text back a word to mark complete
 * segment log by days
