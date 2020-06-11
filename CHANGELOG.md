@@ -1,5 +1,22 @@
 # Next
 
+To provide more control to users, we are providing a method to disable commands
+without contacting support.
+
+1. send curl with id
+  Start here to ensure the implementation does not dictate the interface.
+
+  curl -X PUT 'https://vds.reergymerej.com/prod/VirtualDrillSergeant/commands/disable/184'
+
+1. requires a Gateway API endpoint
+  Mock at first to ensure we can hit it from the client.
+
+1. requires Lambda
+  Connect the dots, refining inputs/outputs
+
+
+
+
 # 4.0.2
 
 To improve the disable command flow:

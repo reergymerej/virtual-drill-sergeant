@@ -19,6 +19,15 @@ To find your "command_log_id,"
 Look for the "log-id" part of the url.
 
 
+### Self Service
+
+If you're nasty, you can use curl instead of calling support.
+
+```sh
+curl -X PUT 'https://vds.reergymerej.com/prod/VirtualDrillSergeant/commands/disable/command_log_id'
+```
+
+
 ## Wishlist
 
 
