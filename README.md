@@ -24,7 +24,7 @@ Look for the "log-id" part of the url.
 If you're nasty, you can use curl instead of calling support.
 
 ```sh
-curl -X PUT 'https://vds.reergymerej.com/prod/VirtualDrillSergeant/commands/disable/command_log_id'
+curl -X PUT 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands/disable/command_log_id'
 ```
 
 

@@ -6,7 +6,7 @@ without contacting support.
 1. send curl with id
   Start here to ensure the implementation does not dictate the interface.
 
-  curl -X PUT 'https://vds.reergymerej.com/prod/VirtualDrillSergeant/commands/disable/184'
+  curl -X PUT 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands/disable/command_log_id'
 
 1. requires a Gateway API endpoint
   Mock at first to ensure we can hit it from the client.
