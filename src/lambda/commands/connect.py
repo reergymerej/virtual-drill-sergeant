@@ -1,9 +1,5 @@
-import logging
 import psycopg2
 import rds_config
-
-logger = logging.getLogger()
-logger.setLevel(logging.INFO)
 
 def get_connection():
     """
@@ -25,9 +21,9 @@ def get_connection():
         )
     except:
         e = sys.exc_info()[0]
-        logger.error("ERROR: Unexpected error: Could not connect to db instance.")
-        logger.error(e)
+        print("ERROR: Unexpected error: Could not connect to db instance.")
+        print(e)
         sys.exit()
 
-    logger.info("SUCCESS: Connection to RDS instance succeeded")
+    print("SUCCESS: Connection to RDS instance succeeded")
     return connection

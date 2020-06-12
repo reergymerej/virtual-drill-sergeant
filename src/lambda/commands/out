@@ -1,1 +1,1 @@
-{"isBase64Encoded": "false", "statusCode": 200, "headers": {"Access-Control-Allow-Origin": "*", "Content-Type": "application/json"}, "body": "5"}
+{"isBase64Encoded": "false", "statusCode": 200, "headers": {"Access-Control-Allow-Origin": "*", "Content-Type": "application/json"}, "body": "[[9, \"Do 40 4-count side-straddle hops!\", true], [7, \"Do 20 4-count flutter kicks!\", false], [6, \"Do 10 pushups!\", false], [8, \"Do 20 crunches!\", false], [4, \"30 second plank, go!\", false], [10, \"10 wide-arm pushups\", false], [5, \"Do 10 diamond pushups!\", false]]"}

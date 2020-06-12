@@ -9,10 +9,12 @@ in shape?
 There is a bank of commands that will be issued at random.  Commands may be
 disabled/enabled through the web interface.
 
+To see the list of commands, visit https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands.
 
 
 ## Wishlist
 
+* See a list of rules to see which are enabled.
 
 * Control over which commands are issued
   select screen to decide on exercises I'd like to see that I can change at any
@@ -22,9 +24,6 @@ disabled/enabled through the web interface.
 
 * Hierarchy or categorization of commands
   exercise type and severity
-
-
-
 
 * Use shortened urls in text messages.
 * Make it easier to mark a command as completed.
