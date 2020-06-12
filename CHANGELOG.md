@@ -1,5 +1,10 @@
 # Next
 
+# 4.0.7
+## Added
+
+Added a list of commands to show what is enabled.
+
 
 # 4.0.6
 
