@@ -20,6 +20,8 @@
   const buttonLog = getEl('log')
   const output = getEl('output')
   const log = getEl('logTable')
+  const inputEl = getEl('input')
+  const disableCommandForm = getEl('disableCommand')
 
   const message = (message) => {
     output.innerText = message
@@ -83,7 +85,6 @@
     messageText: 'disabling...',
     url: `${apiUrl}/disable/${phone}`,
   })
-
 
   const getLog = () => {
     const url = `${apiUrl}/${phone}/logs`
@@ -161,6 +162,19 @@
     enableElement(buttonLog)
   }
 
+  const disableCommand = async (commandLogId) => {
+    message('Disabling command')
+    const url = `${apiUrl}/commands/disable/${commandLogId}`
+    try {
+      await fetch(url, {
+        method: 'PUT',
+      })
+      message('Command disabled')
+    } catch (error) {
+      message('Unable to disable command')
+    }
+  }
+
   const logId = query['log-id']
   if (logId) {
     await completeTask(logId)
@@ -170,4 +184,13 @@
   buttonLog.addEventListener('click', loadLog)
   buttonEnable.addEventListener('click', enableClickHandler)
   buttonDisable.addEventListener('click', disableClickHandler)
+
+  disableCommandForm.addEventListener('submit', (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const commandLogId = inputEl.value
+    if (commandLogId) {
+      disableCommand(commandLogId)
+    }
+  })
 })()

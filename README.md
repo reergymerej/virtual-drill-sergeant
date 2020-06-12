@@ -6,9 +6,8 @@ in shape?
 
 ## User Manual
 
-To disable commands that may be issued, locate the "command_log_id" and contact
-support.  You're not a real user, so I don't need to tell you how to do that.
-Just text me.
+To disable commands that may be issued, locate the "command_log_id" and use it
+on the "disable command" form in the web client.
 
 To find your "command_log_id,"
 
@@ -21,7 +20,7 @@ Look for the "log-id" part of the url.
 
 ### Self Service
 
-If you're nasty, you can use curl instead of calling support.
+If you're nasty, you can use curl instead.
 
 ```sh
 curl -X PUT 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands/disable/command_log_id'

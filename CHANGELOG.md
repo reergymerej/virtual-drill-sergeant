@@ -1,5 +1,14 @@
 # Next
 
+# 4.0.4
+
+## Added
+
+A form on the web client to allow disabling commands by command log id for those
+who do not wish to use curl.
+
+
+
 # 4.0.3
 
 ## Added
