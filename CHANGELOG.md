@@ -1,5 +1,13 @@
 # Next
 
+# 4.0.5
+
+Add a "disable command" next to each item in the log.  There will be no need for
+the form with this.
+
+![disable command on web](./resources/4.0.5.png)
+
+
 # 4.0.4
 
 ## Added

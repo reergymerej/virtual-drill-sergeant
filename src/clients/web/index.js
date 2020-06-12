@@ -20,8 +20,6 @@
   const buttonLog = getEl('log')
   const output = getEl('output')
   const log = getEl('logTable')
-  const inputEl = getEl('input')
-  const disableCommandForm = getEl('disableCommand')
 
   const message = (message) => {
     output.innerText = message
@@ -132,8 +130,25 @@
     return button
   }
 
+  const getDisableCommandButton = (id) => {
+    const button = el('button')
+    button.innerText = 'Disable Command'
+    const afterHandler = () => {
+      button.removeEventListener('click', clickHandler)
+      button.parentNode.innerText = 'disabled'
+
+    }
+    const clickHandler = async () => {
+      await disableCommand(id)
+      afterHandler()
+    }
+    button.addEventListener('click', clickHandler)
+    return button
+  }
+
   const dataRowToCells = ([id, text, complete]) => {
     return [
+      getDisableCommandButton(id),
       text,
       complete
         ? '+'
@@ -184,13 +199,4 @@
   buttonLog.addEventListener('click', loadLog)
   buttonEnable.addEventListener('click', enableClickHandler)
   buttonDisable.addEventListener('click', disableClickHandler)
-
-  disableCommandForm.addEventListener('submit', (event) => {
-    event.preventDefault()
-    event.stopPropagation()
-    const commandLogId = inputEl.value
-    if (commandLogId) {
-      disableCommand(commandLogId)
-    }
-  })
 })()
