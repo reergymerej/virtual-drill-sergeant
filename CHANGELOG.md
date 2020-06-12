@@ -1,21 +1,15 @@
 # Next
 
+# 4.0.3
+
+## Added
+
 To provide more control to users, we are providing a method to disable commands
 without contacting support.
 
-1. send curl with id
-  Start here to ensure the implementation does not dictate the interface.
-
-  curl -X PUT 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands/disable/command_log_id'
-
-1. requires a Gateway API endpoint
-  Mock at first to ensure we can hit it from the client.
-
-1. requires Lambda
-  Connect the dots, refining inputs/outputs
-
-
-
+```sh
+curl -X PUT 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands/disable/command_log_id'
+```
 
 # 4.0.2
 
