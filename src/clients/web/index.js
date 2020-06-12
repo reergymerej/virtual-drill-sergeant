@@ -114,32 +114,17 @@
     message('Task completed')
   }
 
-  const getCompleteButton = (id) => {
+  // Returns a button that will perform an action on click and change text
+  // after.
+  const getAsyncActionButton = (id, buttonText, buttonTextAfter, handlerFunction) => {
     const button = el('button')
-    button.innerText = 'Finish'
+    button.innerText = buttonText
     const afterHandler = () => {
       button.removeEventListener('click', clickHandler)
-      button.parentNode.innerText = '+'
-
+      button.parentNode.innerText = buttonTextAfter
     }
     const clickHandler = async () => {
-      await completeTask(id)
-      afterHandler()
-    }
-    button.addEventListener('click', clickHandler)
-    return button
-  }
-
-  const getDisableCommandButton = (id) => {
-    const button = el('button')
-    button.innerText = 'Disable Command'
-    const afterHandler = () => {
-      button.removeEventListener('click', clickHandler)
-      button.parentNode.innerText = 'disabled'
-
-    }
-    const clickHandler = async () => {
-      await disableCommand(id)
+      await handlerFunction(id)
       afterHandler()
     }
     button.addEventListener('click', clickHandler)
@@ -148,11 +133,12 @@
 
   const dataRowToCells = ([id, text, complete]) => {
     return [
-      getDisableCommandButton(id),
+      getAsyncActionButton(id, 'Enable', 'enabled', enableCommand),
+      getAsyncActionButton(id, 'Disable', 'disabled', disableCommand),
       text,
       complete
         ? '+'
-        : getCompleteButton(id)
+        : getAsyncActionButton(id, 'Finish', '+', completeTask)
     ]
   }
 
@@ -175,6 +161,19 @@
     const logData = await getLog()
     log.appendChild(createLog(logData))
     enableElement(buttonLog)
+  }
+
+  const enableCommand = async (commandLogId) => {
+    message('Enabling command')
+    const url = `${apiUrl}/commands/enable/${commandLogId}`
+    try {
+      await fetch(url, {
+        method: 'PUT',
+      })
+      message('Command enabled')
+    } catch (error) {
+      message('Unable to enabled command')
+    }
   }
 
   const disableCommand = async (commandLogId) => {

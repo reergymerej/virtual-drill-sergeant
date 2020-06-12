@@ -7,7 +7,7 @@ in shape?
 ## User Manual
 
 There is a bank of commands that will be issued at random.  Commands may be
-disabled through the web interface.
+disabled/enabled through the web interface.
 
 
 

@@ -1,8 +1,18 @@
 # Next
 
+
+# 4.0.6
+
+## Added
+
+Added an "enable command" next to each item in the log.
+
+![enable command on web](./resources/4.0.6.png)
+
+
 # 4.0.5
 
-Add a "disable command" next to each item in the log.  There will be no need for
+Added a "disable command" next to each item in the log.  There will be no need for
 the form with this.
 
 ![disable command on web](./resources/4.0.5.png)
