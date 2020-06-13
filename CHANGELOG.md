@@ -10,6 +10,7 @@
 
 * Ability to turn commands on/off directly
 
+![4.0.8](./resources/4.0.8.png)
 
 
 # 4.0.7
