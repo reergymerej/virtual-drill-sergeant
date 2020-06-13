@@ -13,6 +13,7 @@ def get_command(user_id):
         FROM user_commands
         JOIN commands ON commands.id = user_commands.command_id
         WHERE user_commands.user_id = {user_id}
+            and not user_commands.disabled
     """.format(user_id=user_id)
     print(sql)
     return db.random(sql)

@@ -59,7 +59,6 @@ I've got a lookup table so I can find commands per user and separate their
         RETURNING id, disabled
     ;
 
-TODO: Update the query to get the commands per user.
 TODO: Update query to alter disabled state (from commands table to
 user_commands).
 TODO: Remove the "disabled" field from the command table.
@@ -94,8 +93,23 @@ Key (command_id)=(15) is not present in table "commands"
 When adding to the command_log, if fails.  We're trying to use the
 user_command.id instead of command.id.
 
-* Add a user_commands.id field.
-* Back fill it.
-* Make command.id nullable.
-* Update service to insert null command.id.
+x Add a user_commands.id field.
+x Back fill it.
+x Make command.id nullable.
+x Update service to insert null command.id.
 * Remove command.id after transition.
+
+* Create query to get commands per user
+
+        select user_commands.id
+        ,commands.text
+        ,user_commands.disabled
+        from user_commands
+        join commands on commands.id = user_commands.command_id
+        where user_commands.user_id = 1
+        ;
+
+
+New endpoint to get commands by user.
+https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/3/commands
+https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/commands

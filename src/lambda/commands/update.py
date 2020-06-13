@@ -2,12 +2,12 @@ import json
 import db
 import os
 
-def update_command(phone, id, disabled):
+def update_command(id, disabled):
     query = """
-        UPDATE commands
+        UPDATE user_commands
         SET disabled = {disabled}
         WHERE id = {id}
-        RETURNING id, text, disabled
+        RETURNING id, disabled
     """.format(id = id, disabled = disabled)
     print(query)
     if os.getenv('DEV'):
@@ -16,9 +16,6 @@ def update_command(phone, id, disabled):
 
 def get_id(event):
     return int(event.get("pathParameters", {}).get("id", None))
-
-def get_phone(event):
-    return int(event.get("pathParameters", {}).get("phone", None))
 
 def get_disabled(event):
     body = json.loads(event.get("body", "{}"))
@@ -36,13 +33,10 @@ def get_response(body):
     }
 
 def lambda_handler(event, context):
-    print("event")
     print(event)
-    phone = get_phone(event)
     id = get_id(event)
     disabled = get_disabled(event)
-    print("disabled", disabled)
-    result = update_command(phone, id, disabled)
+    result = update_command(id, disabled)
     print(result)
     return get_response(result)
 
