@@ -1,5 +1,17 @@
 # Next
 
+# 4.0.8
+## Changed
+
+* Improved UI with sexy blue and purple, whitespace, and fat buttons
+* Removed enable/disable buttons next to log items
+
+## Added
+
+* Ability to turn commands on/off directly
+
+
+
 # 4.0.7
 ## Added
 

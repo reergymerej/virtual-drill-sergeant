@@ -17,7 +17,6 @@
   const getEl = (id) => document.getElementById(id)
   const buttonDisable = getEl('disable')
   const buttonEnable = getEl('enable')
-  const buttonLog = getEl('log')
   const output = getEl('output')
   const log = getEl('logTable')
   const commandsEl = getEl('commandsEl')
@@ -53,11 +52,11 @@
     .then(checkStatus)
 
   const disableElement = (element) => {
-    element.disabled = true
+    element.style.display = 'none'
   }
 
   const enableElement = (element) => {
-    element.disabled = false
+    element.style.display = 'initial'
   }
 
   const getActionClickHandler = ({
@@ -122,7 +121,7 @@
     button.innerText = buttonText
     const afterHandler = () => {
       button.removeEventListener('click', clickHandler)
-      button.innerText = buttonTextAfter
+      button.parentNode.innerText = buttonTextAfter
     }
     const clickHandler = async () => {
       await handlerFunction(id)
@@ -132,14 +131,13 @@
     return button
   }
 
-  const dataRowToCells = ([id, text, complete]) => {
+  const logRowToCells = ([id, text, complete]) => {
+    const done = '✔️'
     return [
-      getAsyncActionButton(id, 'Enable', 'enabled', enableCommand),
-      getAsyncActionButton(id, 'Disable', 'disabled', disableCommand),
       text,
       complete
-        ? '+'
-        : getAsyncActionButton(id, 'Finish', '+', completeTask)
+        ? done
+        : getAsyncActionButton(id, 'Finish', done, completeTask)
     ]
   }
 
@@ -151,69 +149,65 @@
   const createLog = (log) => {
     const table = el('table')
     log
-      .map(dataRowToCells)
+      .map(logRowToCells)
       .forEach(addRowToTable(table))
     return table
   }
 
   const loadLog = async () => {
-    disableElement(buttonLog)
-    log.innerHTML = ''
     const logData = await getLog()
     log.appendChild(createLog(logData))
-    enableElement(buttonLog)
   }
 
-  const enableCommand = async (commandLogId) => {
-    message('Enabling command')
-    const url = `${apiUrl}/commands/enable/${commandLogId}`
-    try {
-      await fetch(url, {
-        method: 'PUT',
-      })
-      message('Command enabled')
-    } catch (error) {
-      message('Unable to enabled command')
-    }
+  const changeCommand = (commandId, disabled) => {
+    const phone = 1
+    const url = `${apiUrl}/${phone}/commands/${commandId}`
+    return fetch(url, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        disabled,
+      }),
+    })
   }
 
-  const disableCommand = async (commandLogId) => {
-    message('Disabling command')
-    const url = `${apiUrl}/commands/disable/${commandLogId}`
-    try {
-      await fetch(url, {
-        method: 'PUT',
-      })
-      message('Command disabled')
-    } catch (error) {
-      message('Unable to disable command')
-    }
+  const commandRowToCells = (command) => {
+    const [id, text, disabled] = command
+    const checkbox = el('input')
+    checkbox.setAttribute('type', 'checkbox')
+    checkbox.checked = !disabled
+    checkbox.addEventListener('change', async () => {
+      message('saving')
+      await changeCommand(id, !checkbox.checked)
+      message('saved')
+    })
+    return [
+      checkbox,
+      text,
+    ]
+  }
+
+  const loadCommands = async () => {
+    message('Loading commands')
+    const commands = await ajax(`${apiUrl}/commands`)
+    const table = el('table')
+    commands
+      .map(commandRowToCells)
+      .forEach(addRowToTable(table))
+    commandsEl.innerHTML = ''
+    commandsEl.appendChild(table)
   }
 
   const logId = query['log-id']
   if (logId) {
     await completeTask(logId)
   }
-  await checkStatus()
-  await loadLog()
+  checkStatus()
+  loadLog()
+  loadCommands()
 
-  buttonLog.addEventListener('click', loadLog)
   buttonEnable.addEventListener('click', enableClickHandler)
   buttonDisable.addEventListener('click', disableClickHandler)
-
-
-  const loadCommands = async () => ajax(`${apiUrl}/commands`)
-
-  const buttonListCommands = getAsyncActionButton(null, 'list commands', 'list commands again', async () => {
-    message('Loading commands')
-    const commands = await loadCommands()
-    const table = el('table')
-    commands
-      .map(x => [x[1], x[2] ? 'disabled' : ''])
-      .forEach(addRowToTable(table))
-    commandsEl.innerHTML = ''
-    commandsEl.appendChild(table)
-  })
-
-  document.body.appendChild(buttonListCommands)
 })()

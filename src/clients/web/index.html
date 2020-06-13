@@ -3,14 +3,20 @@
   <head>
     <title>VDS</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <head>
+      <meta charset="UTF-8">
+    </head>
   <style>
     html {
       font-family: sans-serif;
     }
     body {
       display: flex;
-      flex-direction: column;
-      background: bisque;
+      justify-content: center;
+      background: #03a9f4;
+    }
+    #main {
+      max-width: 400px;
     }
     .center {
       text-align: center;
@@ -22,40 +28,51 @@
     .mono {
       font-family: monospace;
     }
-    .green {
+    .fontColor {
       color: #251e08;
-      /*color: darkgreen;*/
     }
     button {
       text-transform: uppercase;
       border: 0;
       border-radius: 0.4em;
       /*background: #27bf3b;*/
-      background: #06460e;
+      background: #673ab7;
       color: white;
       font-weight: bold;
       letter-spacing: 0.2em;
       cursor: pointer;
+      padding: 1em;
+      margin: 0;
     }
     button[disabled] {
       opacity: 0.3;
       color: #69ab62;
       cursor: auto;
     }
+    input[type="checkbox"] {
+      width: 2em;
+      height: 2em;
+    }
+    td {
+      padding: 0.4em;
+    }
   </style>
   </head>
   <body>
-    <h1 class="center padding green">
-      Virtual Drill Sergeant
-    </h1>
-    <div class="center">
-      <button id="enable" class="padding" disabled>Enable</button>
-      <button id="disable" class="padding" disabled>Disable</button>
-      <button id="log" class="padding" disabled>View Logs</button>
+    <div id="main">
+      <h1 class="center padding fontColor">
+        Virtual Drill Sergeant
+      </h1>
+      <div class="center">
+        <button id="enable" style="display: none">Enable</button>
+        <button id="disable" class="padding" style="display: none">Disable</button>
+        <div id="output" class="mono center padding fontColor"></div>
+      </div>
+      <h2>Commands</h2>
+      <div id="commandsEl"></div>
+      <h2>Log</h2>
+      <div id="logTable"></div>
+      <script src="./index.js"></script>
     </div>
-    <div id="output" class="mono center padding green"></div>
-    <div id="logTable"></div>
-    <div id="commandsEl">/<div>
-    <script src="./index.js"></script>
   </body>
 </html>
