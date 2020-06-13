@@ -34,3 +34,7 @@ def insert(sql):
 def delete(sql):
     fn = lambda cursor: None
     return query(fn, sql)
+
+def update(sql):
+    fn = lambda cursor: cursor.fetchall()
+    return query(fn, sql)

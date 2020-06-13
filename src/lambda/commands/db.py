@@ -31,3 +31,7 @@ def random(sql):
 def insert(sql):
     fn = lambda cursor: None
     return query(fn, sql)
+
+def update(sql):
+    fn = lambda cursor: cursor.fetchall()
+    return query(fn, sql)
