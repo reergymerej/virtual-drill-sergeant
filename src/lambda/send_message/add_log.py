@@ -3,15 +3,14 @@ import db
 import os
 import psycopg2
 
-def insert_command(command_id, number_id):
+def insert_command(user_commands_id):
     query = """
-INSERT INTO command_log(command_id, number_id)
-VALUES ({0}, {1})
-RETURNING id""".format(command_id, number_id)
+        INSERT INTO command_log(user_commands_id)
+        VALUES ({user_commands_id})
+        RETURNING id""".format(user_commands_id=user_commands_id)
     print(query)
-    # if os.getenv('DEV'):
-    #     return
-
+    if os.getenv('DEV'):
+        return
     return db.insert(query)
 
 def get_command_id_from_event(event):
