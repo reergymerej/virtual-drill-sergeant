@@ -20,6 +20,7 @@
   const buttonLog = getEl('log')
   const output = getEl('output')
   const log = getEl('logTable')
+  const commandsEl = getEl('commandsEl')
 
   const message = (message) => {
     output.innerText = message
@@ -121,7 +122,7 @@
     button.innerText = buttonText
     const afterHandler = () => {
       button.removeEventListener('click', clickHandler)
-      button.parentNode.innerText = buttonTextAfter
+      button.innerText = buttonTextAfter
     }
     const clickHandler = async () => {
       await handlerFunction(id)
@@ -195,7 +196,24 @@
   }
   await checkStatus()
   await loadLog()
+
   buttonLog.addEventListener('click', loadLog)
   buttonEnable.addEventListener('click', enableClickHandler)
   buttonDisable.addEventListener('click', disableClickHandler)
+
+
+  const loadCommands = async () => ajax(`${apiUrl}/commands`)
+
+  const buttonListCommands = getAsyncActionButton(null, 'list commands', 'list commands again', async () => {
+    message('Loading commands')
+    const commands = await loadCommands()
+    const table = el('table')
+    commands
+      .map(x => [x[1], x[2] ? 'disabled' : ''])
+      .forEach(addRowToTable(table))
+    commandsEl.innerHTML = ''
+    commandsEl.appendChild(table)
+  })
+
+  document.body.appendChild(buttonListCommands)
 })()
