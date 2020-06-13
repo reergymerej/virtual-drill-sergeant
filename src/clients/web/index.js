@@ -191,7 +191,7 @@
 
   const loadCommands = async () => {
     message('Loading commands')
-    const commands = await ajax(`${apiUrl}/commands`)
+    const commands = await ajax(`${apiUrl}/${phone}/commands`)
     const table = el('table')
     commands
       .map(commandRowToCells)
