@@ -7,9 +7,11 @@ def list_command(user_id):
         select user_commands.id
         ,commands.text
         ,user_commands.disabled
-        from user_commands
-        join commands on commands.id = user_commands.command_id
+        ,commands.id
+        from commands
+        left join user_commands on commands.id = user_commands.command_id
         where user_commands.user_id = {user_id}
+        or user_commands.user_id is null
     """.format(user_id=user_id)
     print(query)
     if os.getenv('DEV'):

@@ -15,10 +15,12 @@ the "finish" button or click the "complete" link in the text message.
 
 ## Problems
 
-Everyone is sharing the same commands list.
+* When I add a new command, it does not show in the users' lists.
 
 
 ## Wishlist
+
+* I would like the be able to add new commands easily.
 
 * More flexibility over scheduling (ex: every 30 minutes after 6 pm)
 

@@ -1,5 +1,9 @@
 # Next
 
+## Changed
+
+* List of items on/off individualized per user
+
 # 4.0.8
 ## Changed
 

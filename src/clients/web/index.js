@@ -177,7 +177,7 @@
     const [id, text, disabled] = command
     const checkbox = el('input')
     checkbox.setAttribute('type', 'checkbox')
-    checkbox.checked = !disabled
+    checkbox.checked = disabled === false
     checkbox.addEventListener('change', async () => {
       message('saving')
       await changeCommand(id, !checkbox.checked)

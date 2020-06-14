@@ -59,10 +59,10 @@ I've got a lookup table so I can find commands per user and separate their
         RETURNING id, disabled
     ;
 
-TODO: Update query to alter disabled state (from commands table to
+x TODO: Update query to alter disabled state (from commands table to
 user_commands).
-TODO: Remove the "disabled" field from the command table.
-TODO: Remove the enable/disable by log endpoints and code.
+x TODO: Remove the "disabled" field from the command table.
+X TODO: Remove the enable/disable by log endpoints and code.
 
 How does this change the command log?
 
@@ -97,9 +97,9 @@ x Add a user_commands.id field.
 x Back fill it.
 x Make command.id nullable.
 x Update service to insert null command.id.
-* Remove command.id after transition.
+x Remove command.id after transition.
 
-* Create query to get commands per user
+x Create query to get commands per user
 
         select user_commands.id
         ,commands.text
@@ -113,3 +113,22 @@ x Update service to insert null command.id.
 New endpoint to get commands by user.
 https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/3/commands
 https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/commands
+
+x Trash old commands endpoints
+
+# Sun Jun 14 07:18:14 PDT 2020
+
+
+* When I add a new command, it does not show in the users' lists.
+
+        select user_commands.id
+        ,commands.text
+        ,user_commands.disabled
+        from user_commands
+        join commands on commands.id = user_commands.command_id
+        where user_commands.user_id = {user_id}
+
+It's joining on the users' commands first.
+
+
+How do you work with "dev" lambdas when you're not ready to replace prod?
