@@ -132,3 +132,11 @@ It's joining on the users' commands first.
 
 
 How do you work with "dev" lambdas when you're not ready to replace prod?
+
+
+When trying to enable a command that has not been assigned to the user yet, we
+try and PATCH the user command.  It does not exist, though, so it fails.
+
+https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/commands/null
+
+Instead, we need to _create_ the new user command.

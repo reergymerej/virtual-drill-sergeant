@@ -9,11 +9,11 @@ def get_command(user_id):
     sql = """
         SELECT user_commands.id,
                 commands.text,
-                user_commands.disabled
+                user_commands.enabled
         FROM user_commands
         JOIN commands ON commands.id = user_commands.command_id
         WHERE user_commands.user_id = {user_id}
-            and not user_commands.disabled
+            and user_commands.enabled
     """.format(user_id=user_id)
     print(sql)
     return db.random(sql)

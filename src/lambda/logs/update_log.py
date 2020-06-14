@@ -15,7 +15,7 @@ def update_log(id):
 
 def get_command_id_from_event(event):
     print(event)
-    return int(event["pathParameters"]["id"])
+    return int(event["pathParameters"]["log-id"])
 
 def lambda_handler(event, context):
     command_id = get_command_id_from_event(event)

@@ -13,6 +13,7 @@
   }
   const query = getQuery()
   const phone = query.id || '1'
+  const userId = phone
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
   const getEl = (id) => document.getElementById(id)
   const buttonDisable = getEl('disable')
@@ -105,12 +106,12 @@
     return row
   }
 
-  const getCompleteUrl = (logId) => `${apiUrl}/logs/${logId}/update`
+  const getCompleteUrl = (logId) => `${apiUrl}/${userId}/logs/${logId}`
 
   const completeTask = async (logId) => {
     message('Completing task...')
     const url = getCompleteUrl(logId)
-    await ajax(url, 'PUT')
+    await ajax(url, 'PATCH')
     message('Task completed')
   }
 
@@ -159,28 +160,35 @@
     log.appendChild(createLog(logData))
   }
 
-  const changeCommand = (commandId, disabled) => {
-    const phone = 1
-    const url = `${apiUrl}/${phone}/commands/${commandId}`
+  const changeCommand = (userId, userCommandId, enabled, commandId) => {
+    const isUpdate = !!userCommandId
+    const method = isUpdate ? 'PATCH' : 'POST'
+    const url = isUpdate
+      ? `${apiUrl}/${userId}/commands/${userCommandId}`
+      : `${apiUrl}/${userId}/commands`
     return fetch(url, {
-      method: 'PATCH',
+      method,
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        disabled,
+        enabled,
+        commandId,
       }),
     })
+      .then(x => x.json())
   }
 
-  const commandRowToCells = (command) => {
-    const [id, text, disabled] = command
+  const commandRowToCells = (userCommand) => {
+    let [id, text, enabled, commandId] = userCommand
     const checkbox = el('input')
     checkbox.setAttribute('type', 'checkbox')
-    checkbox.checked = disabled === false
+    checkbox.checked = enabled === true
+
     checkbox.addEventListener('change', async () => {
       message('saving')
-      await changeCommand(id, !checkbox.checked)
+      const result = await changeCommand(userId, id, checkbox.checked, commandId)
+      ;[id, enabled] = result
       message('saved')
     })
     return [

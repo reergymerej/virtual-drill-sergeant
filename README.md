@@ -15,8 +15,6 @@ the "finish" button or click the "complete" link in the text message.
 
 ## Problems
 
-* When I add a new command, it does not show in the users' lists.
-
 
 ## Wishlist
 

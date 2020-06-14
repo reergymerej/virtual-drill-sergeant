@@ -2,24 +2,24 @@ import json
 import db
 import os
 
-def update_command(id, disabled):
+def update_command(id, enabled):
     query = """
         UPDATE user_commands
-        SET disabled = {disabled}
+        SET enabled = {enabled}
         WHERE id = {id}
-        RETURNING id, disabled
-    """.format(id = id, disabled = disabled)
+        RETURNING id, enabled
+    """.format(id = id, enabled = enabled)
     print(query)
     if os.getenv('DEV'):
         return
-    return db.update(query)
+    return db.update(query)[0]
 
 def get_id(event):
     return int(event.get("pathParameters", {}).get("id", None))
 
-def get_disabled(event):
+def get_enabled(event):
     body = json.loads(event.get("body", "{}"))
-    return body.get("disabled", False)
+    return body.get("enabled", False)
 
 def get_response(body):
     return {
@@ -35,8 +35,8 @@ def get_response(body):
 def lambda_handler(event, context):
     print(event)
     id = get_id(event)
-    disabled = get_disabled(event)
-    result = update_command(id, disabled)
+    enabled = get_enabled(event)
+    result = update_command(id, enabled)
     print(result)
     return get_response(result)
 

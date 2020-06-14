@@ -28,7 +28,7 @@ def random(sql):
     return get_random.choice(results)
 
 def insert(sql):
-    fn = lambda cursor: cursor.fetchone()[0]
+    fn = lambda cursor: cursor.fetchall()
     return query(fn, sql)
 
 def delete(sql):
