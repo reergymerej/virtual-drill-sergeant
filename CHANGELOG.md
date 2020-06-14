@@ -4,6 +4,7 @@
 
 * List of items on/off individualized per user
 * New commands will show up for users (disabled) immediately.
+* Sort commands
 
 # 4.0.8
 ## Changed

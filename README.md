@@ -12,6 +12,9 @@ disabled/enabled through the web interface.
 A log of commands issued is shown on.  To mark an activity as complete, click
 the "finish" button or click the "complete" link in the text message.
 
+When new commands are created, they are not added to your rotation unless you
+explicitly opt-in.
+
 
 ## Problems
 
