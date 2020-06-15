@@ -140,3 +140,24 @@ try and PATCH the user command.  It does not exist, though, so it fails.
 https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/commands/null
 
 Instead, we need to _create_ the new user command.
+
+# Sun Jun 14 15:22:49 PDT 2020
+
+Make it easier to create commands.
+* create SQL
+      insert into commands (text)
+      values ('Hello')
+
+* endpoint
+  POST https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/commands
+  This is already user-commands.
+  POST https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands
+  curl -X POST "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands" -i
+
+* lambda
+  curl -X POST "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/commands" -i \
+    --data-raw '{"text":"from curl"}'
+
+  curl -X POST
+
+* client

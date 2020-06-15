@@ -49,6 +49,9 @@
       color: #69ab62;
       cursor: auto;
     }
+    input[type="text"] {
+      height: 2em;
+    }
     input[type="checkbox"] {
       width: 2em;
       height: 2em;
@@ -70,6 +73,10 @@
       </div>
       <h2>Commands</h2>
       <div id="commandsEl"></div>
+      <form id="newCommand">
+        <input id="newCommandText" type="text" placeholder="new command" />
+        <button>Create</button>
+      </form>
       <h2>Log</h2>
       <div id="logTable"></div>
       <script src="./index.js"></script>

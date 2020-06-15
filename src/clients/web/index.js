@@ -208,6 +208,22 @@
     commandsEl.appendChild(table)
   }
 
+  const createNewCommand = async (text) => {
+    message('Saving new command')
+    const url = `${apiUrl}/commands`
+    const result = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        text,
+      }),
+    })
+      .then(x => x.json())
+    console.log(result)
+  }
+
   const logId = query['log-id']
   if (logId) {
     await completeTask(logId)
@@ -218,4 +234,14 @@
 
   buttonEnable.addEventListener('click', enableClickHandler)
   buttonDisable.addEventListener('click', disableClickHandler)
+
+  getEl('newCommand').addEventListener('submit', async (event) => {
+    event.preventDefault()
+    event.stopPropagation()
+    const input = getEl('newCommandText')
+    const text = input.value
+    await createNewCommand(text)
+    input.value = ''
+    loadCommands()
+  })
 })()

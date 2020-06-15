@@ -7,7 +7,7 @@ def list_command(user_id):
         select uc.id
                 ,uc.text
                 ,uc.enabled
-                ,uc.id
+                ,uc.command_id
         from (
                 select u.id as id
                 ,c.text as text

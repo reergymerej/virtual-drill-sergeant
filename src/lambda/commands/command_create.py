@@ -2,15 +2,13 @@ import json
 import db
 import os
 
-def create_command(user_id, command_id, enabled):
+def create_command(text):
     query = """
-        insert into user_commands (user_id, command_id, enabled)
-        values ({user_id}, {command_id}, {enabled})
-        RETURNING id, enabled
+          insert into commands (text)
+          values ('{text}')
+          returning id, text
     """.format(
-        command_id = command_id,
-        enabled = enabled,
-        user_id = user_id,
+        text = text,
     )
     print(query)
     if os.getenv('DEV'):
@@ -20,13 +18,9 @@ def create_command(user_id, command_id, enabled):
 def get_phone(event):
     return int(event.get("pathParameters", {}).get("phone", None))
 
-def get_enabled(event):
+def get_command_text(event):
     body = json.loads(event.get("body", "{}"))
-    return body.get("enabled", False)
-
-def get_command_id(event):
-    body = json.loads(event.get("body", "{}"))
-    return body.get("commandId")
+    return body.get("text", "")
 
 def get_response(body):
     return {
@@ -41,13 +35,11 @@ def get_response(body):
 
 def lambda_handler(event, context):
     print(event)
-    user_id = get_phone(event)
-    enabled = get_enabled(event)
-    command_id = get_command_id(event)
-    result = create_command(user_id, command_id, enabled)
+    text = get_command_text(event)
+    result = create_command(text)
     return get_response(result)
 
 if __name__ == '__main__':
-    with open('./command_user_create.json') as f:
+    with open('./command_create.json') as f:
         event = json.load(f)
         lambda_handler(event, None)
