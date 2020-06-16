@@ -4,41 +4,22 @@ import os
 
 def list_command(user_id):
     query = """
-        select uc.id
-                ,uc.text
-                ,uc.enabled
-                ,uc.command_id
-        from (
-                select u.id as id
-                ,c.text as text
-                ,u.enabled as enabled
-                ,c.id as command_id
-                from commands c
-                left join user_commands u on c.id = u.command_id
-                where c.id not in (
-                        select u.command_id
-                        from user_commands u
-                        where u.user_id = {user_id}
-                )
-                union
-                select u.id as id
-                ,c.text as text
-                ,u.enabled as enabled
-                ,c.id as command_id
-                from commands c
-                left join user_commands u on c.id = u.command_id
-                where c.id in (
-                        select u.command_id
-                        from user_commands u
-                        where u.user_id = {user_id}
-                )
-                and u.user_id = {user_id}
-        ) as uc
+        select
+        uc.id
+        ,c.text
+        ,uc.enabled
+        ,c.id
+        from commands c
+        left join (
+                select *
+                from user_commands uc
+                where uc.user_id = {user_id}
+        ) uc on uc.command_id = c.id
         order by (
                 case when enabled then 1
                 when enabled is null then 2
                 else 3 end
-        ) asc, text asc
+        ) asc, c.text asc
     """.format(user_id=user_id)
     print(query)
     if os.getenv('DEV'):
