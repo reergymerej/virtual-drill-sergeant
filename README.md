@@ -18,15 +18,14 @@ explicitly opt-in.
 
 ## Problems
 
+I want to group commands so I can turn the groups on/off easily.
 
 ## Wishlist
 
-* I would like the be able to add new commands easily.
-
-* More flexibility over scheduling (ex: every 30 minutes after 6 pm)
-
 * Hierarchy or categorization of commands
   exercise type and severity
+
+* More flexibility over scheduling (ex: every 30 minutes after 6 pm)
 
 * Use shortened urls in text messages.
 

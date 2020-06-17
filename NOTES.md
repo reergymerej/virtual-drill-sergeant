@@ -161,3 +161,79 @@ Make it easier to create commands.
   curl -X POST
 
 * client
+
+
+# Tue Jun 16 21:17:37 PDT 2020
+
+How will we group commands?
+
+* Create groups
+* Add commands to groups
+* Turn commands on/off by group
+
+```sql
+  ----------------------
+  -- user command groups
+
+  select *
+  from numbers
+  ;
+
+  -- Create new command group
+  --insert into user_command_groups (user_id, name)
+  --values (1, 'arms')
+  --;
+
+  select *
+  from user_command_groups ucg
+  ;
+
+  select *
+  from commands
+  ;
+
+  -- Add values to user command group
+  --insert into ucg_values (user_command_group_id, user_command_id)
+  --values (2, 10)
+  --,(2, 5)
+  --,(2, 6)
+  --;
+
+  -- Get command groups for a user
+  select *
+  from user_command_groups ucg
+  where ucg.user_id = 1
+  ;
+
+  -- Get group list
+  select ucg.id
+  ,ucg.name
+  ,c.text
+  from user_command_groups ucg
+  join ucg_values v on v.user_command_group_id = ucg.id
+  join commands c on c.id = v.user_command_id
+  where ucg.user_id = 1
+  --and ucg.id = 2
+  ;
+
+  select *
+  from user_commands uc
+  where uc.user_id = 1
+  ;
+
+
+  -- Enable/disable based on group.
+  update user_commands
+  set enabled = (
+          command_id in (
+                  -- Get commands in group
+                  select v.user_command_id
+                  from user_command_groups ucg
+                  join ucg_values v on v.user_command_group_id = ucg.id
+                  where ucg.id = 2
+          )
+  )
+  where user_id = 1
+  ;
+
+```
