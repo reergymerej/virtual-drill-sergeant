@@ -236,4 +236,21 @@ How will we group commands?
   where user_id = 1
   ;
 
-```
+# Wed Jun 17 13:18:08 PDT 2020
+
+I'm not getting messages anymore.  In
+https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/mobile/text-messaging
+I can see 9 failed attempts for "promotional."  How do I make them
+transactional?
+
+Well, they are still failing, but now as transactional.
+
+The providerResponse should shed some light.
+
+
+Guess I have to wait 24 hours to see what the result is.
+
+
+# Wed Jun 17 18:58:03 PDT 2020
+
+https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/{phone}/commands/group

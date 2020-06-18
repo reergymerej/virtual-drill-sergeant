@@ -40,14 +40,22 @@ def save_command(user_commands_id, phone_id):
 
 def publish_sns(message, number):
     print("sending to {0}".format(number))
-    if os.getenv('DEV'):
-        print("...skipping send")
-        return
+    # if os.getenv('DEV'):
+        # print("...skipping send")
+        # return
     sns = boto3.client("sns")
-    return sns.publish(
+    result = sns.publish(
         PhoneNumber=number,
-        Message=message
+        Message=message,
+        MessageAttributes = {
+            'AWS.SNS.SMS.SMSType': {
+                'DataType': 'String',
+                'StringValue': 'Promotional',
+            }
+        }
     )
+    print(result)
+    return result
 
 def handle_send_failure(command_id):
     sql = """
