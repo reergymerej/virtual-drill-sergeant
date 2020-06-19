@@ -40,3 +40,9 @@ aws lambda invoke \
   --log-type Tail \
   --query 'LogResult' \
   --output text | base64 --decode
+
+
+
+TODO: Trash db variables.  I just leaked them!
+
+

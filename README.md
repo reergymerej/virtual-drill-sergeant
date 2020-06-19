@@ -18,6 +18,8 @@ explicitly opt-in.
 
 ## Problems
 
+I'm not getting messages anymore.
+
 I want to group commands so I can turn the groups on/off easily.
 
 ## Wishlist

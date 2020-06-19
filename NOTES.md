@@ -258,3 +258,12 @@ curl -X POST https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/Virtual
   -i \
   --header 'Content-Type: application/json' \
   --data '{"name":"some cool group"}'
+
+# Fri Jun 19 10:59:34 PDT 2020
+
+https://docs.aws.amazon.com/cli/latest/reference/lambda/update-function-configuration.html#synopsis
+
+update-function-configuration
+  --function-name foo
+  --environment Variables="{DB_HOST=XXXXX,DB_PASSWORD=OOOOO}"
+
