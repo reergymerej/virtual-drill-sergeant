@@ -2,25 +2,24 @@ import db
 import json
 import os
 
-def create_command(text):
+def do_query(text):
     query = """
-          insert into commands (text)
-          values ('{text}')
-          returning id, text
+        select '{text}'
     """.format(
         text = text,
     )
     print(query)
     if os.getenv('DEV'):
+        print("skipping db")
         return
-    return db.insert(query)
+    return db.all(query)
 
-def get_phone(event):
-    return int(event.get("pathParameters", {}).get("phone", None))
+def get_path_param(event, param):
+    return int(event.get("pathParameters", {}).get(param, None))
 
-def get_command_text(event):
+def get_from_body(event, value):
     body = json.loads(event.get("body", "{}"))
-    return body.get("text", "")
+    return body.get(value, "")
 
 def get_response(body):
     return {
@@ -35,11 +34,10 @@ def get_response(body):
 
 def lambda_handler(event, context):
     print(event)
-    text = get_command_text(event)
-    result = create_command(text)
+    result = do_query(get_path_param(event, "phone"))
     return get_response(result)
 
 if __name__ == '__main__':
-    with open('./command_create.json') as f:
+    with open('./event.json') as f:
         event = json.load(f)
         lambda_handler(event, None)

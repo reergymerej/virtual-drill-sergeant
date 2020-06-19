@@ -253,4 +253,8 @@ Guess I have to wait 24 hours to see what the result is.
 
 # Wed Jun 17 18:58:03 PDT 2020
 
-https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/{phone}/commands/group
+
+curl -X POST https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/{phone}/commands/group \
+  -i \
+  --header 'Content-Type: application/json' \
+  --data '{"name":"some cool group"}'
