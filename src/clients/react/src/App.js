@@ -1,9 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
+import Log from './Log'
+import NewCommand from './NewCommand'
+import UserCommands from './UserCommands'
 
 const App = () => {
   const [enabled, setEnabled] = useState(false)
   const [messageValue, setMessage] = useState('')
+  const [logValues, setLog] = useState([])
+  const [commandValues, setCommandValues] = useState([])
 
   const getQuery = () => {
     if (window.location.search) {
@@ -21,12 +26,6 @@ const App = () => {
   const phone = query.id || '1'
   const userId = phone
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
-  const getEl = (id) => document.getElementById(id)
-  const buttonDisable = getEl('disable')
-  const buttonEnable = getEl('enable')
-  const output = getEl('output')
-  const log = getEl('logTable')
-  const commandsEl = getEl('commandsEl')
 
   const message = (message) => {
     console.log(message)
@@ -46,61 +45,31 @@ const App = () => {
     .then(x => message(x.message))
     .then(checkStatus)
 
-  const disableElement = (element) => {
-    console.log('disable', element)
-    // element.style.display = 'none'
-  }
-
-  const enableElement = (element) => {
-    console.log('enable', element)
-    // element.style.display = 'initial'
-  }
-
   const getActionClickHandler = ({
     action,
-    button,
     messageText,
     url,
   }) => () => {
-    disableElement(button)
     message(messageText)
     return action(url)
   }
 
   const enableClickHandler = getActionClickHandler({
     action: update,
-    button: buttonEnable,
     messageText: 'enabling...',
     url: `${apiUrl}/enable/${phone}`,
   })
 
   const disableClickHandler = getActionClickHandler({
     action: update,
-    button: buttonDisable,
     messageText: 'disabling...',
     url: `${apiUrl}/disable/${phone}`,
   })
 
-  const getLog = () => {
+  const getLog = useCallback(() => {
     const url = `${apiUrl}/${phone}/logs`
     return ajax(url)
-  }
-
-  const el = (tag) => document.createElement(tag)
-
-  const createRow = (cells) => {
-    const row = el('tr')
-    cells.forEach(value => {
-      const cell = el('td')
-      if (typeof value !== 'object') {
-        cell.innerText = value
-      } else {
-        cell.appendChild(value)
-      }
-      row.appendChild(cell)
-    })
-    return row
-  }
+  }, [apiUrl, phone, ajax])
 
   const getCompleteUrl = (logId) => `${apiUrl}/${userId}/logs/${logId}`
 
@@ -109,51 +78,15 @@ const App = () => {
     const url = getCompleteUrl(logId)
     await ajax(url, 'PATCH')
     message('Task completed')
-  }
-
-  // Returns a button that will perform an action on click and change text
-  // after.
-  const getAsyncActionButton = (id, buttonText, buttonTextAfter, handlerFunction) => {
-    const button = el('button')
-    button.innerText = buttonText
-    const afterHandler = () => {
-      button.removeEventListener('click', clickHandler)
-      button.parentNode.innerText = buttonTextAfter
-    }
-    const clickHandler = async () => {
-      await handlerFunction(id)
-      afterHandler()
-    }
-    button.addEventListener('click', clickHandler)
-    return button
-  }
-
-  const logRowToCells = ([id, text, complete]) => {
-    const done = '✔️'
-    return [
-      text,
-      complete
-        ? done
-        : getAsyncActionButton(id, 'Finish', done, completeTask)
-    ]
-  }
-
-  const addRowToTable = table => cells => {
-    const row = createRow(cells)
-    table.appendChild(row)
-  }
-
-  const createLog = (log) => {
-    const table = el('table')
-    log
-      .map(logRowToCells)
-      .forEach(addRowToTable(table))
-    return table
-  }
-
-  const loadLog = async () => {
-    const logData = await getLog()
-    log.appendChild(createLog(logData))
+    const updatedValues = logValues.map(x => {
+      if (x[0] === logId) {
+        const newX = [...x]
+        newX[2] = true
+        return newX
+      }
+      return x
+    })
+    setLog(updatedValues)
   }
 
   const changeCommand = (userId, userCommandId, enabled, commandId) => {
@@ -175,39 +108,18 @@ const App = () => {
       .then(x => x.json())
   }
 
-  const commandRowToCells = (userCommand) => {
-    let [id, text, enabled, commandId] = userCommand
-    const checkbox = el('input')
-    checkbox.setAttribute('type', 'checkbox')
-    checkbox.checked = enabled === true
-
-    checkbox.addEventListener('change', async () => {
-      message('saving')
-      const result = await changeCommand(userId, id, checkbox.checked, commandId)
-      ;[id, enabled] = result
-      message('saved')
-    })
-    return [
-      checkbox,
-      text,
-    ]
-  }
-
-  const loadCommands = async () => {
+  const loadUserCommands = useCallback(async () => {
     message('Loading commands')
     const commands = await ajax(`${apiUrl}/${phone}/commands`)
-    const table = el('table')
-    commands
-      .map(commandRowToCells)
-      .forEach(addRowToTable(table))
-    commandsEl.innerHTML = ''
-    commandsEl.appendChild(table)
-  }
+    setCommandValues(commands)
+  }, [ajax, phone, apiUrl])
+
+  const [newCommandText, setNewCommandText] = useState('')
 
   const createNewCommand = async (text) => {
     message('Saving new command')
     const url = `${apiUrl}/commands`
-    const result = await fetch(url, {
+    await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -217,7 +129,8 @@ const App = () => {
       }),
     })
       .then(x => x.json())
-    console.log(result)
+    setNewCommandText('')
+    loadUserCommands()
   }
 
   const logId = query['log-id']
@@ -226,23 +139,6 @@ const App = () => {
     throw new Error('I did not even try.')
     // await completeTask(logId)
   }
-
-  // loadLog()
-  // loadCommands()
-
-  // buttonEnable.addEventListener('click', enableClickHandler)
-  // buttonDisable.addEventListener('click', disableClickHandler)
-
-  // getEl('newCommand').addEventListener('submit', async (event) => {
-  //   event.preventDefault()
-  //   event.stopPropagation()
-  //   const input = getEl('newCommandText')
-  //   const text = input.value
-  //   await createNewCommand(text)
-  //   input.value = ''
-  //   loadCommands()
-  // })
-
 
   const updateButtonByStatus = useCallback((status) => {
     setEnabled(status !== 'DISABLED')
@@ -255,30 +151,69 @@ const App = () => {
       .then(() => message(''))
   }, [ajax, phone, updateButtonByStatus])
 
-  useEffect(async () => {
-    await checkStatus()
+  useEffect(() => {
+    checkStatus()
   }, [checkStatus])
+
+
+  useEffect(() => {
+    const x = async () => {
+      const logData = await getLog()
+      setLog(logData)
+    }
+    x()
+  }, [getLog])
+
+  useEffect(() => {
+    loadUserCommands()
+  }, [loadUserCommands])
+
+  const onUserCommandChange = async (id, enabled, commandId) => {
+    // TODO: update state quickly so checkbox is checked while we save
+    message('saving')
+    const result = await changeCommand(userId, id, enabled, commandId)
+    const [updatedId, nextEnabledValue] = result
+    const newValues = commandValues.map(x => {
+      if (x[0] === updatedId) {
+        const newValue = [...x]
+        newValue[2] = nextEnabledValue
+        return newValue
+      }
+      return x
+    })
+    setCommandValues(newValues)
+    message('saved')
+  }
 
   return (
     <div className="App">
       <h1>Virtual Drill Sergeant</h1>
       <div className="center">
         {enabled
-          ? <button>Disable</button>
-          : <button>Enable</button>
+          ? <button onClick={disableClickHandler}>Disable</button>
+          : <button onClick={enableClickHandler}>Enable</button>
         }
         <div id="output" className="mono center padding fontColor">{messageValue}</div>
       </div>
       <h2>Commands</h2>
-      <div id="commandsEl"></div>
-      <form id="newCommand">
-        <input id="newCommandText" type="text" placeholder="new command" />
-        <button>Create</button>
-      </form>
+      {commandValues && (
+        <UserCommands
+          rows={commandValues}
+          onChange={onUserCommandChange}
+        />
+      )}
+      <NewCommand
+        onSave={createNewCommand}
+        value={newCommandText}
+        onChange={setNewCommandText}
+      />
       <h2>Log</h2>
-      <div id="logTable"></div>
+      <Log
+        completeTask={completeTask}
+        rows={logValues}
+      />
     </div>
-  );
+  )
 }
 
 export default App;
