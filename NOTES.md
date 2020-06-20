@@ -267,3 +267,14 @@ update-function-configuration
   --function-name foo
   --environment Variables="{DB_HOST=XXXXX,DB_PASSWORD=OOOOO}"
 
+
+# Fri Jun 19 16:06:51 PDT 2020
+How do we create separate environments for dev/prod?
+
+stacks
+CloudFormation is a beast.  Let's look at pinning versions of Lambdas to the
+API Gateway for now.
+
+# Fri Jun 19 19:38:40 PDT 2020
+I just changed all my .env files to symlinks.
+ln -s -f (pwd)/.env ./src/lambda/commands/.env

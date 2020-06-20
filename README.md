@@ -24,6 +24,8 @@ I want to group commands so I can turn the groups on/off easily.
 
 ## Wishlist
 
+* Separate dev/prod environments.
+
 * Hierarchy or categorization of commands
   exercise type and severity
 
