@@ -66,18 +66,14 @@ const App = () => {
     url: `${apiUrl}/disable/${phone}`,
   })
 
-  const getLog = useCallback(() => {
-    const url = `${apiUrl}/${phone}/logs`
-    return ajax(url)
-  }, [apiUrl, phone, ajax])
+  const getCompleteUrl = useCallback((logId) => `${apiUrl}/${userId}/logs/${logId}`, [userId])
 
-  const getCompleteUrl = (logId) => `${apiUrl}/${userId}/logs/${logId}`
-
-  const completeTask = async (logId) => {
+  const completeTask = useCallback(async (logId) => {
     message('Completing task...')
     const url = getCompleteUrl(logId)
     await ajax(url, 'PATCH')
     message('Task completed')
+    console.log({logValues})
     const updatedValues = logValues.map(x => {
       if (x[0] === logId) {
         const newX = [...x]
@@ -87,7 +83,7 @@ const App = () => {
       return x
     })
     setLog(updatedValues)
-  }
+  }, [ajax, getCompleteUrl, logValues, setLog])
 
   const changeCommand = (userId, userCommandId, enabled, commandId) => {
     const isUpdate = !!userCommandId
@@ -133,12 +129,6 @@ const App = () => {
     loadUserCommands()
   }
 
-  const logId = query['log-id']
-
-  if (logId) {
-    throw new Error('I did not even try.')
-    // await completeTask(logId)
-  }
 
   const updateButtonByStatus = useCallback((status) => {
     setEnabled(status !== 'DISABLED')
@@ -151,22 +141,46 @@ const App = () => {
       .then(() => message(''))
   }, [ajax, phone, updateButtonByStatus])
 
+  const logId = query['log-id']
+  const [autoCompleteTask, setAutoCompleteTask] = useState(!!logId)
+  const [loadLog, setLoadLog] = useState(false)
+
+  useEffect(() => {
+    const x = async () => {
+      setAutoCompleteTask(false)
+      await completeTask(logId)
+      setLoadLog(true)
+    }
+    if (autoCompleteTask) {
+      x()
+    }
+  }, [completeTask, logId, autoCompleteTask])
+
   useEffect(() => {
     checkStatus()
   }, [checkStatus])
 
-
   useEffect(() => {
-    const x = async () => {
-      const logData = await getLog()
-      setLog(logData)
+      console.log({loadLog})
+    if (loadLog) {
+      const getLog = async () => {
+        const url = `${apiUrl}/${phone}/logs`
+        return ajax(url)
+      }
+
+      const x = async () => {
+        const logData = await getLog()
+        setLog(logData)
+      }
+
+      x()
     }
-    x()
-  }, [getLog])
+  }, [loadLog, setLog, ajax, phone])
 
   useEffect(() => {
     loadUserCommands()
   }, [loadUserCommands])
+
 
   const onUserCommandChange = async (id, enabled, commandId) => {
     // TODO: update state quickly so checkbox is checked while we save
