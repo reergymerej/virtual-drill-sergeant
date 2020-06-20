@@ -1,0 +1,23 @@
+.Tabs {
+}
+
+.TabBar {
+  display: flex;
+}
+
+.TabBar > button {
+  flex: 1;
+  border-color: #673ab7;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0;
+  border-right-width: 0;
+}
+
+.TabBar > button:last-child {
+  border-right-width: 1px;
+}
+
+.TabBar > button:not(.active) {
+  background: initial;
+}

@@ -6,8 +6,8 @@ body {
   justify-content: center;
   background: #03a9f4;
 }
-#main {
-  max-width: 400px;
+.App {
+  width: 375px;
 }
 .center {
   text-align: center;
@@ -26,7 +26,6 @@ button {
   text-transform: uppercase;
   border: 0;
   border-radius: 0.4em;
-  /*background: #27bf3b;*/
   background: #673ab7;
   color: white;
   font-weight: bold;

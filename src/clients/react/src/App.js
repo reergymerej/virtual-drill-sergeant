@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react'
 import './App.css';
 import Log from './Log'
 import NewCommand from './NewCommand'
 import UserCommands from './UserCommands'
+import Tabs from './Tabs'
 
 const getQuery = () => {
   if (window.location.search) {
@@ -16,33 +17,44 @@ const getQuery = () => {
   }
   return {}
 }
+const query = getQuery()
+const logId = query['log-id']
+const phone = query.id || '1'
+const userId = phone
+const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
+const getCompleteUrl = (logId) => `${apiUrl}/${userId}/logs/${logId}`
 
 const App = () => {
   const [enabled, setEnabled] = useState(false)
   const [messageValue, setMessage] = useState('')
   const [logValues, setLog] = useState([])
   const [commandValues, setCommandValues] = useState([])
-  const query = getQuery()
-  const logId = query['log-id']
   const [autoCompleteTask, setAutoCompleteTask] = useState(!!logId)
   const [loadLog, setLoadLog] = useState(!autoCompleteTask)
 
-  const phone = query.id || '1'
-  const userId = phone
-  const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
-
-  const message = (message) => {
+  const message = useCallback((message) => {
     console.log(message)
     setMessage(message)
     return message
-  }
+  }, [setMessage])
 
   const ajax = useCallback((url, method = 'GET') => fetch(url, { method })
     .then(x => x.json())
     .catch((e) => {
       console.error(e)
       message('It did not work.')
-    }), [])
+    }), [message])
+
+  const setEnabledByStatus = useCallback((status) => {
+    setEnabled(status !== 'DISABLED')
+  }, [setEnabled])
+
+  const checkStatus = useCallback(() => {
+    message('Checking status...')
+    return ajax(`${apiUrl}/${phone}`)
+      .then(resp => setEnabledByStatus(resp.status))
+      .then(() => message(''))
+  }, [ajax, message, setEnabledByStatus])
 
   const update = (url) => ajax(url, 'PUT')
     .then(x => message(x.message))
@@ -69,8 +81,6 @@ const App = () => {
     url: `${apiUrl}/disable/${phone}`,
   })
 
-  const getCompleteUrl = useCallback((logId) => `${apiUrl}/${userId}/logs/${logId}`, [userId])
-
   const completeTask = useCallback(async (logId) => {
     message('Completing task...')
     const url = getCompleteUrl(logId)
@@ -86,7 +96,7 @@ const App = () => {
       return x
     })
     setLog(updatedValues)
-  }, [ajax, getCompleteUrl, logValues, setLog])
+  }, [ajax, logValues, message])
 
   const changeCommand = (userId, userCommandId, enabled, commandId) => {
     const isUpdate = !!userCommandId
@@ -111,7 +121,7 @@ const App = () => {
     message('Loading commands')
     const commands = await ajax(`${apiUrl}/${phone}/commands`)
     setCommandValues(commands)
-  }, [ajax, phone, apiUrl])
+  }, [ajax, message])
 
   const [newCommandText, setNewCommandText] = useState('')
 
@@ -132,18 +142,7 @@ const App = () => {
     loadUserCommands()
   }
 
-  const updateButtonByStatus = useCallback((status) => {
-    setEnabled(status !== 'DISABLED')
-  }, [setEnabled])
-
-  const checkStatus = useCallback(() => {
-    message('Checking status...')
-    return ajax(`${apiUrl}/${phone}`)
-      .then(resp => updateButtonByStatus(resp.status))
-      .then(() => message(''))
-  }, [ajax, phone, updateButtonByStatus])
-
-
+  // auto-complete task
   useEffect(() => {
     const x = async () => {
       setAutoCompleteTask(false)
@@ -153,12 +152,13 @@ const App = () => {
     if (autoCompleteTask) {
       x()
     }
-  }, [completeTask, logId, autoCompleteTask])
+  }, [completeTask, autoCompleteTask])
 
   useEffect(() => {
     checkStatus()
   }, [checkStatus])
 
+  // load log
   useEffect(() => {
     if (loadLog) {
       const getLog = async () => {
@@ -173,15 +173,13 @@ const App = () => {
 
       x()
     }
-  }, [loadLog, setLog, ajax, phone])
+  }, [loadLog, setLog, ajax])
 
   useEffect(() => {
     loadUserCommands()
   }, [loadUserCommands])
 
-
   const onUserCommandChange = async (id, enabled, commandId) => {
-    // TODO: update state quickly so checkbox is checked while we save
     message('saving')
     const result = await changeCommand(userId, id, enabled, commandId)
     const [updatedId, nextEnabledValue] = result
@@ -199,7 +197,7 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>Virtual Drill Sergeant</h1>
+      <h1 className="center">Virtual Drill Sergeant</h1>
       <div className="center">
         {enabled
           ? <button onClick={disableClickHandler}>Disable</button>
@@ -207,23 +205,33 @@ const App = () => {
         }
         <div id="output" className="mono center padding fontColor">{messageValue}</div>
       </div>
-      <h2>Commands</h2>
-      {commandValues && (
-        <UserCommands
-          rows={commandValues}
-          onChange={onUserCommandChange}
-        />
-      )}
-      <NewCommand
-        onSave={createNewCommand}
-        value={newCommandText}
-        onChange={setNewCommandText}
-      />
-      <h2>Log</h2>
-      <Log
-        completeTask={completeTask}
-        rows={logValues}
-      />
+      <Tabs
+        names={[
+        'log',
+        'commands',
+        ]}
+        initialTab={0}
+      >
+        <div>
+          <Log
+            completeTask={completeTask}
+            rows={logValues}
+          />
+        </div>
+        <div>
+          {commandValues && (
+            <UserCommands
+              rows={commandValues}
+              onChange={onUserCommandChange}
+            />
+            )}
+          <NewCommand
+            onSave={createNewCommand}
+            value={newCommandText}
+            onChange={setNewCommandText}
+          />
+        </div>
+      </Tabs>
     </div>
   )
 }
