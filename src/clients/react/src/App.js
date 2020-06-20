@@ -4,25 +4,29 @@ import Log from './Log'
 import NewCommand from './NewCommand'
 import UserCommands from './UserCommands'
 
+const getQuery = () => {
+  if (window.location.search) {
+    return window.location.search.substring(1).split('&').reduce((acc, pair) => {
+      const [key, value] = pair.split('=')
+      return {
+        ...acc,
+        [key]: value,
+      }
+    }, {})
+  }
+  return {}
+}
+
 const App = () => {
   const [enabled, setEnabled] = useState(false)
   const [messageValue, setMessage] = useState('')
   const [logValues, setLog] = useState([])
   const [commandValues, setCommandValues] = useState([])
-
-  const getQuery = () => {
-    if (window.location.search) {
-      return window.location.search.substring(1).split('&').reduce((acc, pair) => {
-        const [key, value] = pair.split('=')
-        return {
-          ...acc,
-          [key]: value,
-        }
-      }, {})
-    }
-    return {}
-  }
   const query = getQuery()
+  const logId = query['log-id']
+  const [autoCompleteTask, setAutoCompleteTask] = useState(!!logId)
+  const [loadLog, setLoadLog] = useState(!autoCompleteTask)
+
   const phone = query.id || '1'
   const userId = phone
   const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
@@ -39,7 +43,6 @@ const App = () => {
       console.error(e)
       message('It did not work.')
     }), [])
-
 
   const update = (url) => ajax(url, 'PUT')
     .then(x => message(x.message))
@@ -129,7 +132,6 @@ const App = () => {
     loadUserCommands()
   }
 
-
   const updateButtonByStatus = useCallback((status) => {
     setEnabled(status !== 'DISABLED')
   }, [setEnabled])
@@ -141,9 +143,6 @@ const App = () => {
       .then(() => message(''))
   }, [ajax, phone, updateButtonByStatus])
 
-  const logId = query['log-id']
-  const [autoCompleteTask, setAutoCompleteTask] = useState(!!logId)
-  const [loadLog, setLoadLog] = useState(false)
 
   useEffect(() => {
     const x = async () => {
@@ -161,7 +160,6 @@ const App = () => {
   }, [checkStatus])
 
   useEffect(() => {
-      console.log({loadLog})
     if (loadLog) {
       const getLog = async () => {
         const url = `${apiUrl}/${phone}/logs`
@@ -230,4 +228,4 @@ const App = () => {
   )
 }
 
-export default App;
+export default App
