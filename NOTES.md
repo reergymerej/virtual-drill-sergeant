@@ -327,3 +327,11 @@ curl -X PATCH https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/Virtua
   -i \
   --header 'Content-Type: application/json' \
   --data '{"active":false}'
+
+Now we need to update the status check to check the agent table.
+
+```sql
+select a.active
+from agents a
+where a.user_id = 1
+```

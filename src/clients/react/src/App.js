@@ -31,6 +31,7 @@ const App = () => {
   const [commandValues, setCommandValues] = useState([])
   const [autoCompleteTask, setAutoCompleteTask] = useState(!!logId)
   const [loadLog, setLoadLog] = useState(!autoCompleteTask)
+  const [fetchingStatus, setFetchingStatus] = useState(false)
 
   const message = useCallback((message) => {
     console.log(message)
@@ -45,17 +46,27 @@ const App = () => {
       message('It did not work.')
     }), [message])
 
-  const setEnabledByStatus = useCallback((status) => {
-    setEnabled(status !== 'DISABLED')
+  const setEnabledByStatus = useCallback((active) => {
+    setEnabled(active)
   }, [setEnabled])
 
   const checkStatus = useCallback(() => {
     message('Checking status...')
-    return ajax(`${apiUrl}/${phone}`)
-      .then(resp => setEnabledByStatus(resp.status))
+    setFetchingStatus(true)
+    const url = `${apiUrl}/${userId}/agent`
+    return ajax(url)
+      .then(x => {
+        const active = x[0][0]
+        return active
+      })
+      .then(resp => setEnabledByStatus(resp))
       .then(() => message(''))
       .catch(error => {
         console.error(error)
+      })
+      .finally(x => {
+        setFetchingStatus(false)
+        return x
       })
   }, [ajax, message, setEnabledByStatus])
 
@@ -210,9 +221,13 @@ const App = () => {
     <div className="App">
       <h1 className="center">Virtual Drill Sergeant</h1>
       <div className="center">
-        {enabled
-          ? <button onClick={disableClickHandler}>Disable</button>
-          : <button onClick={enableClickHandler}>Enable</button>
+        {
+          fetchingStatus
+            ? ''
+            : (enabled
+              ? <button onClick={disableClickHandler}>Disable</button>
+              : <button onClick={enableClickHandler}>Enable</button>
+            )
         }
         <div id="output" className="mono center padding fontColor">{messageValue}</div>
       </div>
