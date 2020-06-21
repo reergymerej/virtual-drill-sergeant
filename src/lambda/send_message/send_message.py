@@ -62,6 +62,7 @@ def handle_send_failure(command_id):
     db.delete(sql)
 
 def send_message_to_user(user_id, phone_number):
+    print("generating message for '{user_id}'".format(user_id=user_id))
     result = False
     command_row = None
     command_log_id = None
@@ -95,6 +96,7 @@ def lambda_handler(event, context):
         result = send_message_to_user(user_id, phone_number)
         all_results.append(result)
 
+    print("all results")
     print(all_results)
     return all_results
 

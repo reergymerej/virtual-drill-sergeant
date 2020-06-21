@@ -54,32 +54,43 @@ const App = () => {
     return ajax(`${apiUrl}/${phone}`)
       .then(resp => setEnabledByStatus(resp.status))
       .then(() => message(''))
+      .catch(error => {
+        console.error(error)
+      })
   }, [ajax, message, setEnabledByStatus])
 
-  const update = (url) => ajax(url, 'PUT')
-    .then(x => message(x.message))
-    .then(checkStatus)
-
-  const getActionClickHandler = ({
-    action,
-    messageText,
-    url,
-  }) => () => {
-    message(messageText)
-    return action(url)
+  const updateAgent = async (active) => {
+    const url = `${apiUrl}/${userId}/agent`
+      return await fetch(url, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          active,
+        }),
+      }).then(x => x.json())
   }
 
-  const enableClickHandler = getActionClickHandler({
-    action: update,
-    messageText: 'enabling...',
-    url: `${apiUrl}/enable/${phone}`,
-  })
+  const enableClickHandler = async () => {
+    try {
+      await updateAgent(true)
+      setEnabled(true)
+      message('enabled')
+    } catch (error) {
+      message('enable failed')
+    }
+  }
 
-  const disableClickHandler = getActionClickHandler({
-    action: update,
-    messageText: 'disabling...',
-    url: `${apiUrl}/disable/${phone}`,
-  })
+  const disableClickHandler = async () => {
+    try {
+      await updateAgent(false)
+      setEnabled(false)
+      message('disabled')
+    } catch (error) {
+      message('disable failed')
+    }
+  }
 
   const completeTask = useCallback(async (logId) => {
     message('Completing task...')
@@ -207,8 +218,8 @@ const App = () => {
       </div>
       <Tabs
         names={[
-        'log',
-        'commands',
+          'log',
+          'commands',
         ]}
         initialTab={0}
       >
@@ -224,7 +235,7 @@ const App = () => {
               rows={commandValues}
               onChange={onUserCommandChange}
             />
-            )}
+          )}
           <NewCommand
             onSave={createNewCommand}
             value={newCommandText}

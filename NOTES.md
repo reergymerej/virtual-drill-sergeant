@@ -310,3 +310,20 @@ within a range.
             where cl.created_at > now() - interval '1 hour'
     )
 ```
+
+Our job is running every couple minutes and sending only to those it should.  If
+there are no commands, it does not send.  Seems to be pretty solid.  I don't
+know what the cost of running this cron every 2 minutes will be.
+
+Now I need to update the enable/disable to make it update the db instead of
+turning old cron jobs on/off.
+
+```sql
+update agents
+set active = true
+where user_id = 4
+```
+curl -X PATCH https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/agent \
+  -i \
+  --header 'Content-Type: application/json' \
+  --data '{"active":false}'
