@@ -1,1 +1,31 @@
-{"phone": 1}
+{
+  "requestContext": {
+    "approximateInvokeCount": 1,
+    "condition": "Success",
+    "functionArn": "arn:aws:lambda:us-east-1:463986597363:function:vds_wake:$LATEST",
+    "requestId": "7965d2d1-b467-4a79-baab-3fb06bf3b67b"
+  },
+  "requestPayload": {
+    "account": "463986597363",
+    "detail": {},
+    "detail-type": "Scheduled Event",
+    "id": "6d242e09-9731-571e-22dc-0e509ee83853",
+    "region": "us-east-1",
+    "resources": [
+      "arn:aws:events:us-east-1:463986597363:rule/vds_wake"
+    ],
+    "source": "aws.events",
+    "time": "2020-06-21T06:35:22Z",
+    "version": "0"
+  },
+  "responseContext": {
+    "executedVersion": "$LATEST",
+    "statusCode": 200
+  },
+  "responsePayload": {
+    "body": "[[1, \"+12064220423\"], [4, \"+11111111111\"]]",
+    "statusCode": 200
+  },
+  "timestamp": "2020-06-21T06:35:33.970Z",
+  "version": "1.0"
+}

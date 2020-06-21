@@ -27,25 +27,20 @@ manage: http://vds.reergymerej.com/?id={user_id}""".format(
     command_log_id=command_log_id
 )
 
-def get_phone(phone_id):
-    sql = "SELECT id, phone FROM numbers WHERE id = {0}".format(phone_id)
-    print(sql)
-    return db.one(sql)
-
-def save_command(user_commands_id, phone_id):
+def save_command(user_commands_id):
     if os.getenv('DEV'):
         return 'fake-log-id'
     command_log_id = insert_command(user_commands_id)
     return command_log_id
 
-def publish_sns(message, number):
-    print("sending to {0}".format(number))
-    # if os.getenv('DEV'):
-        # print("...skipping send")
-        # return
+def publish_sns(message, phone_number):
+    print("sending to {0}".format(phone_number))
+    if os.getenv('DEV'):
+        print("...skipping send")
+        return
     sns = boto3.client("sns")
     result = sns.publish(
-        PhoneNumber=number,
+        PhoneNumber=phone_number,
         Message=message,
         MessageAttributes = {
             'AWS.SNS.SMS.SMSType': {
@@ -66,34 +61,42 @@ def handle_send_failure(command_id):
     print("updating command for failure {0}".format(command_id))
     db.delete(sql)
 
-def lambda_handler(event, context):
-    phone = get_phone(event.get("phone"))
-    phone_id = phone[0]
-    number = phone[1]
+def send_message_to_user(user_id, phone_number):
     result = False
     command_row = None
+    command_log_id = None
     try:
-        command_row = get_command(phone_id)
+        command_row = get_command(user_id)
     except IndexError:
         print("There are no commands to use.")
         result = False
     if command_row:
         user_commands_id = command_row[0]
         command_text = command_row[1]
-        command_log_id = save_command(user_commands_id, phone_id)
+        command_log_id = save_command(user_commands_id)
         print("command saved to log: {0}".format(command_log_id))
         try:
-            message_text = get_message(command_text, phone_id, command_log_id)
-            print('Send "{0}" to {1}.'.format(message_text, number))
-            publish_sns(message_text, number)
+            message_text = get_message(command_text, user_id, command_log_id)
+            print('Send "{0}" to {1}.'.format(message_text, phone_number))
+            publish_sns(message_text, phone_number)
             result = True
         except:
             print(sys.exc_info()[1])
             handle_send_failure(command_log_id)
-    return {
-        "command_log_id": command_log_id,
-        "result": result,
-    }
+    return (user_id, result, command_log_id)
+
+def lambda_handler(event, context):
+    active_agent_user_ids = json.loads(event.get("responsePayload").get("body"))
+    print(active_agent_user_ids)
+    all_results = []
+    for user_id_list in active_agent_user_ids:
+        user_id = user_id_list[0]
+        phone_number = user_id_list[1]
+        result = send_message_to_user(user_id, phone_number)
+        all_results.append(result)
+
+    print(all_results)
+    return all_results
 
 if __name__ == '__main__':
     with open('./event.json') as f:

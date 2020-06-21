@@ -278,3 +278,35 @@ API Gateway for now.
 # Fri Jun 19 19:38:40 PDT 2020
 I just changed all my .env files to symlinks.
 ln -s -f (pwd)/.env ./src/lambda/commands/.env
+
+# Sat Jun 20 18:15:44 PDT 2020
+I'm going to try running a single cron job every minute that will find active
+users and send their messages.  There's a limit of 50-100 cron jobs, so we can't
+scale that way.
+
+{'version': '1.0', 'timestamp': '2020-06-21T06:10:54.761Z', 'requestContext': {'requestId': '9b15be11-4490-4613-b4f1-8e05578b3541', 'functionArn': 'arn:aws:lambda:us-east-1:463986597363:function:vds_wake:$LATEST', 'condition': 'Success', 'approximateInvokeCount': 1}, 'requestPayload': {'version': '0', 'id': '853f5359-b500-b392-7cc2-0bb526f8a1e4', 'detail-type': 'Scheduled Event', 'source': 'aws.events', 'account': '463986597363', 'time': '2020-06-21T06:10:50Z', 'region': 'us-east-1', 'resources': ['arn:aws:events:us-east-1:463986597363:rule/vds_wake'], 'detail': {}}, 'responseContext': {'statusCode': 200, 'executedVersion': '$LATEST'}, 'responsePayload': {'statusCode': 200, 'body': '[[1], [4]]'}}
+
+To get the destination lambda to run, I had to hook up an actual real input to
+the vds_wake.  Triggering through the console or cli does not work.
+
+
+# Sun Jun 21 09:29:31 PDT 2020
+
+Find list of user_ids who have active agents and have not received a command
+within a range.
+
+```sql
+    -- active agents
+    select a.user_id
+    ,n.phone
+    from agents a
+    join numbers n on n.id = a.user_id
+    where a.active
+    and a.user_id not in (
+      -- users who go messages recently
+            select distinct(uc.user_id)
+            from command_log cl
+            join user_commands uc on uc.id = cl.user_commands_id
+            where cl.created_at > now() - interval '1 hour'
+    )
+```

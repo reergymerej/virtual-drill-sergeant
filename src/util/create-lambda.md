@@ -32,17 +32,20 @@
 
 ## Invoke
 
-aws lambda invoke \
-  --function-name foo \
-  --cli-binary-format raw-in-base64-out \
-  --payload file://event.json \
-  out \
-  --log-type Tail \
-  --query 'LogResult' \
-  --output text | base64 --decode
+    aws lambda invoke \
+      --function-name foo \
+      --cli-binary-format raw-in-base64-out \
+      --payload file://event.json \
+      out \
+      --log-type Tail \
+      --query 'LogResult' \
+      --output text | base64 --decode
 
 
+## Update
 
-TODO: Trash db variables.  I just leaked them!
+    aws lambda update-function-code \
+      --function-name foo \
+      --zip-file fileb://package.zip
 
 
