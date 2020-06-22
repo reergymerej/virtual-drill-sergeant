@@ -353,3 +353,24 @@ select id
 from inserted
 returning user_id
 ```
+
+# Mon Jun 22 15:57:54 PDT 2020
+
+My missing sms logs were found.
+https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logsV2:log-groups/log-group/sns$252Fus-east-1$252F463986597363$252FDirectPublishToPhoneNumber$252FFailure
+
+After submitting a ticket to get my rate increased, I'm getting messages again.
+My new user is not, however.  The log reads:
+    "smsType": "Promotional",
+    "mcc": 310,
+    "providerResponse": "Phone is currently unreachable/unavailable",
+
+A one-off test with a transactional message went through.  How do we solve this?
+
+* use transactional
+* implement retries
+
+There's nothing on the interwebs.  Is retry an option?
+
+The simplest option seems to be setting it to transactional.  That will be more
+expensive.  See if that works.

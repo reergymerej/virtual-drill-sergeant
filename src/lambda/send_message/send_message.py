@@ -45,7 +45,7 @@ def publish_sns(message, phone_number):
         MessageAttributes = {
             'AWS.SNS.SMS.SMSType': {
                 'DataType': 'String',
-                'StringValue': 'Promotional',
+                'StringValue': 'Transactional',
             }
         }
     )
