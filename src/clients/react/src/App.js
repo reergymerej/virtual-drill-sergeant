@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './App.css';
 import Log from './Log'
-import NewCommand from './NewCommand'
-import UserCommands from './UserCommands'
 import Tabs from './Tabs'
+import Commands from './Commands'
 
 const getQuery = () => {
   if (window.location.search) {
@@ -245,16 +244,12 @@ const App = () => {
           />
         </div>
         <div>
-          {commandValues && (
-            <UserCommands
-              rows={commandValues}
-              onChange={onUserCommandChange}
-            />
-          )}
-          <NewCommand
-            onSave={createNewCommand}
-            value={newCommandText}
-            onChange={setNewCommandText}
+          <Commands
+            commands={commandValues}
+            createNewCommand={createNewCommand}
+            newCommandText={newCommandText}
+            onUserCommandChange={onUserCommandChange}
+            setNewCommandText={setNewCommandText}
           />
         </div>
       </Tabs>

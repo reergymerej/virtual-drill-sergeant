@@ -1,13 +1,16 @@
 import React from 'react'
+import './NewCommand.css'
 
-export default (props) => {
+const NewCommand = (props) => {
   return (
-    <form onSubmit={e => {
-      e.preventDefault()
-      e.stopPropagation()
-      if (props.value) {
-        props.onSave(props.value)
-      }
+    <form
+      className="NewCommand"
+      onSubmit={e => {
+        e.preventDefault()
+        e.stopPropagation()
+        if (props.value) {
+          props.onSave(props.value)
+        }
     }}>
       <input
         type="text"
@@ -19,3 +22,5 @@ export default (props) => {
     </form>
   )
 }
+
+export default NewCommand

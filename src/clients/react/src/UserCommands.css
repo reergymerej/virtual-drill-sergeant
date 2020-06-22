@@ -1,0 +1,17 @@
+.UserCommands {
+}
+
+.UserCommands label {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.UserCommands label input {
+  margin: 0;
+  margin-right: 1em;
+}
+
+.UserCommands label p {
+  margin: 0;
+}

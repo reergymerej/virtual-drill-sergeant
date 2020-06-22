@@ -1,29 +1,33 @@
 import React from 'react'
+import './UserCommands.css'
 
-export default (props) => {
+const UserCommands = (props) => {
   return (
-    <table>
-      <tbody>
-        {props.rows.map(userCommand => {
-          const [id, text, enabled, commandId] = userCommand
-          return (
-            <tr key={commandId}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={enabled}
-                  onChange={() => {
-                    props.onChange(id, !enabled, commandId)
-                  }}
-                />
-              </td>
-              <td>
-                {text}
-              </td>
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>
+    <div className="UserCommands">
+      {props.rows.map(userCommand => {
+        const [id, text, enabled, commandId] = userCommand
+        return (
+          <div
+            key={commandId}
+            className="row"
+          >
+            <label>
+              <input
+                type="checkbox"
+                checked={enabled}
+                onChange={() => {
+                  props.onChange(id, !enabled, commandId)
+                }}
+              />
+              <p>
+              {text}
+              </p>
+            </label>
+          </div>
+        )
+      })}
+    </div>
   )
 }
+
+export default UserCommands

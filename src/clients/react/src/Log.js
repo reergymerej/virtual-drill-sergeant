@@ -1,28 +1,32 @@
 import React from 'react'
+import './Log.css'
 
 export default (props) => {
   return (
-    <table>
-      <tbody>
-        {props.rows.map(row => {
-          const [id, text, complete] = row
-          return (
-            <tr key={id}>
-              <td>
-                {text}
-              </td>
-              <td>
-                {complete
-                  ? '✔️'
-                  : (<button onClick={() => props.completeTask(id)}>
-                    Finish
-                  </button>)
+    <div className="Log">
+      {props.rows.map(row => {
+      const [id, text, complete] = row
+        return (
+          <div
+            key={id}
+            className="row"
+          >
+            <div>
+              {text}
+            </div>
+            <div>
+              {complete
+              ? '✔️'
+              : (
+              <button onClick={() => props.completeTask(id)}>
+                Finish
+              </button>
+              )
                 }
-              </td>
-            </tr>
-          )
-        })}
-      </tbody>
-    </table>
+            </div>
+          </div>
+        )
+      })}
+    </div>
   )
 }

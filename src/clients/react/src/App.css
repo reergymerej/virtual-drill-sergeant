@@ -46,7 +46,9 @@ input[type="checkbox"] {
   width: 2em;
   height: 2em;
 }
-td {
-  padding: 0.4em;
+.row {
+  display: flex;
+  justify-content: space-between;
+  margin: 2em 0;
+  align-items: center;
 }
-
