@@ -335,3 +335,21 @@ select a.active
 from agents a
 where a.user_id = 1
 ```
+
+# Sun Jun 21 16:56:31 PDT 2020
+
+What does it take to add a new user?
+* phone/user_id
+* add a row for agent
+
+```sql
+with inserted as (
+	insert into numbers (phone)
+	values ('+12223334444')
+	returning id
+)
+insert into agents (user_id)
+select id
+from inserted
+returning user_id
+```

@@ -20,9 +20,9 @@ explicitly opt-in.
 
 I'm not getting messages anymore.
 
-I want to group commands so I can turn the groups on/off easily.
-
 ## Wishlist
+
+I want to group commands so I can turn the groups on/off easily.
 
 * Separate dev/prod environments.
 
@@ -37,8 +37,6 @@ I want to group commands so I can turn the groups on/off easily.
   text back a word to mark complete
 
 * segment log by days
-
-* share db across lambda functions to run locally
 
 * Use CloudFormation to create a stack for this.  This will help me learn AWS
     and possibly allow for whitelabeling this idea.
