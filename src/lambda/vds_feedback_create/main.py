@@ -3,8 +3,14 @@ import json
 import os
 
 def do_query(text):
+    # TODO: properly pass (and escape) params
+    # cursor.execute("query with params %s %s", ("param1", "pa'ram2"))
+    if "'" in text:
+        raise Exception("Oh, no! SQL injection")
     query = """
-        select '{text}'
+        insert into feedback (text)
+        values ('{text}')
+        returning id
     """.format(
         text = text,
     )
@@ -12,10 +18,7 @@ def do_query(text):
     if os.getenv('DEV'):
         print("skipping db")
         return
-    return db.all(query)
-
-def get_path_param(event, param):
-    return int(event.get("pathParameters", {}).get(param, None))
+    return db.insert(query)
 
 def get_from_body(event, value):
     body = json.loads(event.get("body", "{}"))
@@ -34,7 +37,8 @@ def get_response(body):
 
 def lambda_handler(event, context):
     print(event)
-    result = do_query(get_path_param(event, "phone"))
+    text = get_from_body(event, "text")
+    result = do_query(text)
     print(result)
     return get_response(result)
 
