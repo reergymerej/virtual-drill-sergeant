@@ -402,3 +402,4 @@ curl -X POST "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/Virtua
   from feedback f
   order by f.id desc
 
+  curl "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/{phone}/feedback" -i

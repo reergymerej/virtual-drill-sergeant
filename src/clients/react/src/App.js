@@ -268,7 +268,7 @@ const App = () => {
           'commands',
           'feedback',
         ]}
-        initialTab={0}
+        initialTab={2}
       >
         <div>
           <Log
@@ -288,6 +288,7 @@ const App = () => {
         <Feedback
           disable={feedbackSaving}
           onChange={handleFeedbackChange}
+          onMessage={message}
           onSubmit={handleFeedbackSubmit}
           value={feedback}
         />

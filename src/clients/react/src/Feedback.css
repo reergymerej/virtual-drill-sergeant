@@ -7,3 +7,13 @@
   min-height: 200px;
   margin: 1em 0;
 }
+
+.FeedbackItem {
+  margin: 1em 0;
+  padding: 1em;
+  background: #673ab724;
+}
+
+.FeedbackItem p {
+  margin: 0;
+}

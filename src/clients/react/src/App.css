@@ -5,9 +5,11 @@ body {
   display: flex;
   justify-content: center;
   background: #03a9f4;
+  line-height: 2em;
 }
 .App {
   padding: 1em;
+  max-width: 600px;
 }
 .center {
   text-align: center;
