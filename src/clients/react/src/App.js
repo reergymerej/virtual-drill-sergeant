@@ -3,6 +3,7 @@ import './App.css';
 import Log from './Log'
 import Tabs from './Tabs'
 import Commands from './Commands'
+import Feedback from './Feedback'
 
 const getQuery = () => {
   if (window.location.search) {
@@ -216,6 +217,37 @@ const App = () => {
     message('saved')
   }
 
+  const [feedback, setFeedback] = useState('')
+  const [feedbackSaving, setFeedbackSaving] = useState(false)
+
+  const handleFeedbackChange = (value) => {
+    setFeedback(value)
+  }
+
+  const handleFeedbackSubmit = async (value) => {
+    setFeedbackSaving(true)
+    message('saving feedback')
+    const url = `${apiUrl}/feedback`
+    try {
+      const result = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: value,
+        }),
+      }).then(x => x.json())
+      setFeedback('')
+      message('feedback saved, thank you!')
+      console.log({result})
+    } catch (error) {
+      console.error(error)
+      message('problem saving feedback, ironic')
+    }
+    setFeedbackSaving(false)
+  }
+
   return (
     <div className="App">
       <h1 className="center">Virtual Drill Sergeant</h1>
@@ -234,6 +266,7 @@ const App = () => {
         names={[
           'log',
           'commands',
+          'feedback',
         ]}
         initialTab={0}
       >
@@ -252,6 +285,12 @@ const App = () => {
             setNewCommandText={setNewCommandText}
           />
         </div>
+        <Feedback
+          disable={feedbackSaving}
+          onChange={handleFeedbackChange}
+          onSubmit={handleFeedbackSubmit}
+          value={feedback}
+        />
       </Tabs>
     </div>
   )

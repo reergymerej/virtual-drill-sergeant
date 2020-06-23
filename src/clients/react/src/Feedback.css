@@ -1,0 +1,9 @@
+.Feedback form {
+  display: flex;
+  flex-direction: column;
+}
+
+.Feedback form textarea {
+  min-height: 200px;
+  margin: 1em 0;
+}

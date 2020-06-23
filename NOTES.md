@@ -390,3 +390,15 @@ Well, that didn't work.
 
 Let's try retries next.
 https://docs.aws.amazon.com/sns/latest/dg/sns-message-delivery-retries.html
+
+
+# Tue Jun 23 09:34:50 PDT 2020
+
+curl -X POST "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/feedback" -i \
+  --data-raw '{"text":"from curl"}'
+
+# Tue Jun 23 15:45:23 PDT 2020
+  select *
+  from feedback f
+  order by f.id desc
+
