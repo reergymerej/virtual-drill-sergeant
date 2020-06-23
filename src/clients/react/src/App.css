@@ -7,7 +7,7 @@ body {
   background: #03a9f4;
 }
 .App {
-  width: 375px;
+  padding: 1em;
 }
 .center {
   text-align: center;

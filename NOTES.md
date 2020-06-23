@@ -374,3 +374,19 @@ There's nothing on the interwebs.  Is retry an option?
 
 The simplest option seems to be setting it to transactional.  That will be more
 expensive.  See if that works.
+
+
+last failure: 2020-06-22T16:04:32.676-07:00
+
+  "smsType": "Transactional",
+        "mcc": 310,
+        "providerResponse": "Phone is currently unreachable/unavailable",
+        "dwellTimeMs": 210,
+        "dwellTimeMsUntilDeviceAck": 683
+    },
+    "status": "FAILURE"
+
+Well, that didn't work.
+
+Let's try retries next.
+https://docs.aws.amazon.com/sns/latest/dg/sns-message-delivery-retries.html

@@ -17,12 +17,21 @@ explicitly opt-in.
 
 
 ## Problems
+  "providerResponse": "Phone is currently unreachable/unavailable",
 
-I'm not getting messages anymore.
+  How do we get around this?
+
 
 ## Wishlist
 
-I want to group commands so I can turn the groups on/off easily.
+* Provide some sort of goals or benchmarks or something so you can see your
+improvement over time.
+
+* Add some way for the commands to increase in intensity over time.
+
+* I want to group commands so I can turn the groups on/off easily.
+
+* Add a way to provide feedback/wishlist/problems in the UI for easy feedback.
 
 * Separate dev/prod environments.
 
