@@ -4,9 +4,12 @@ import os
 
 def do_query():
     query = """
-        select f.id, f.text
+        select f.id
+            ,f.text
+            ,f.votes
         from feedback f
-        order by f.id desc
+        order by f.votes desc
+            ,f.id desc
     """
     print(query)
     if os.getenv('DEV'):

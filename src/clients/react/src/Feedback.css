@@ -17,3 +17,17 @@
 .FeedbackItem p {
   margin: 0;
 }
+
+.FeedbackItem .tools {
+  font-size: 0.8em;
+  font-weight: bold;
+}
+
+.FeedbackItem .tools > span {
+  margin-left: 0.3em;
+}
+
+.FeedbackItem .tools button {
+  background: initial;
+  padding: initial;
+}

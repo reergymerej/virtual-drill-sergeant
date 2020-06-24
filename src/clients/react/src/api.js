@@ -23,6 +23,7 @@ export const feedbackRead = () => {
     .then(x => x.map(row => ({
       id: row[0],
       text: row[1],
+      votes: row[2],
     })))
 }
 
@@ -32,4 +33,5 @@ export const feedbackVote = (voteId) => {
     method: 'POST',
   })
     .then(x => x.json())
+    .then(x => x[0])
 }

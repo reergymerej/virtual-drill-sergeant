@@ -4,13 +4,15 @@ import * as api from './api'
 
 const FeedbackItem = (props) => {
   const [voting, setVoting] = useState(false)
+  const [updatedVote, setUpdatedVote] = useState(null)
 
   const handleVote = () => {
     props.onMessage('submitting vote')
     setVoting(true)
     const id = props.item.id
     api.feedbackVote(id)
-      .then(_x => {
+      .then(x => {
+        setUpdatedVote(x)
         props.onMessage('vote saved, thanks')
       })
       .catch(e => {
@@ -24,14 +26,22 @@ const FeedbackItem = (props) => {
       <p>
         {props.item.text}
       </p>
-      <button
-        onClick={handleVote}
-        disabled={voting}
-      >
-        <span role="img" aria-label="your mom">
-      👍
+      <div className="tools">
+        <button
+          onClick={handleVote}
+          disabled={voting}
+        >
+          <span role="img" aria-label="your mom">
+            👍
+          </span>
+        </button>
+        <span>
+          {updatedVote === null
+            ? props.item.votes
+            : updatedVote
+          }
         </span>
-      </button>
+      </div>
     </div>
   )
 }

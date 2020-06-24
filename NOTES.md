@@ -426,3 +426,6 @@ curl "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSe
   -i \
   -X POST
 
+# Show the number of votes in feedback.
+First, sort results by votes.
+Next, include in UI.
