@@ -429,3 +429,41 @@ curl "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSe
 # Show the number of votes in feedback.
 First, sort results by votes.
 Next, include in UI.
+
+# Tue Jun 23 21:02:30 PDT 2020
+
+We need to clear out old feedback.  There are two types that need to be cleaned.
+
+1. junk
+2. irrelevant (already fixed)
+
+I don't want to lose good feedback.  I want to be able to show later that it was
+part of making a new feature.  Junk is junk.  It's possible good stuff could be
+deleted accidentally.  We should do a soft delete in that case.
+
+There are different labels we should apply:
+* junk
+* fixed
+* ?
+
+To normalize this, we need a new table.  We could also use an ENUM.
+> Remember that enum are to be used against a very static type definition: a
+> list of values that you expect never to change in the life time of your
+> application!
+https://tapoueh.org/blog/2018/05/postgresql-data-types-enum/
+
+
+* new table: feedback_labels
+* new column for feedback
+* sql for select:
+  update feedback
+  set label_id = 1
+  where id = 12
+* lambda vds_feedback_label
+* api /phone/feedback/id/label
+
+curl -X PUT \
+  -i \
+  https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/feedback/12/label \
+  --header 'Content-Type: application/json' \
+  --data '{"labelId":2}'

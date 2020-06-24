@@ -27,11 +27,25 @@ export const feedbackRead = () => {
     })))
 }
 
-export const feedbackVote = (voteId) => {
-  const url = `${apiUrl}/feedback/${voteId}/vote`
+export const feedbackVote = (id) => {
+  const url = `${apiUrl}/feedback/${id}/vote`
   return fetch(url, {
     method: 'POST',
   })
     .then(x => x.json())
-    .then(x => x[0])
+}
+
+export const feedbackLabel = (id, labelId) => {
+  const url = `${apiUrl}/${phone}/feedback/${id}/label`
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      labelId,
+    }),
+  })
+    .then(x => x.json())
+    .then(x => x.length > 1)
 }

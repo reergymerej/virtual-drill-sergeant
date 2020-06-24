@@ -19,15 +19,28 @@
 }
 
 .FeedbackItem .tools {
-  font-size: 0.8em;
   font-weight: bold;
-}
-
-.FeedbackItem .tools > span {
-  margin-left: 0.3em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .FeedbackItem .tools button {
   background: initial;
   padding: initial;
+}
+
+.FeedbackItem .tools button > span {
+  margin-right: 0.5em;
+}
+
+.FeedbackItem .tools .labels button {
+  margin-left: 1em;
+  border: 1px solid;
+  padding: 0.3em 0.5em;
+  color: #000;
+}
+
+.FeedbackItem .tools .labels button:hover {
+  color: #fff;
 }

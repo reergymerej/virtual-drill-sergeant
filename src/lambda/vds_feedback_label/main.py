@@ -2,21 +2,30 @@ import db
 import json
 import os
 
-def do_query():
+def do_query(id, label_id):
     query = """
-        select f.id
+        update feedback f
+        set label_id = {label_id}
+        where id = {id}
+        returning f.id
             ,f.text
             ,f.votes
-        from feedback f
-        where f.label_id is null
-        order by f.votes desc
-            ,f.id desc
-    """
+    """.format(
+        id = id,
+        label_id = label_id,
+    )
     print(query)
     if os.getenv('DEV'):
         print("skipping db")
         return
-    return db.all(query)
+    return db.update(query)
+
+def get_path_param(event, param):
+    return int(event.get("pathParameters", {}).get(param, None))
+
+def get_from_body(event, value):
+    body = json.loads(event.get("body", "{}"))
+    return body.get(value, "")
 
 def get_response(body):
     return {
@@ -31,7 +40,9 @@ def get_response(body):
 
 def lambda_handler(event, context):
     print(event)
-    result = do_query()
+    id = get_path_param(event, "id")
+    label_id = get_from_body(event, "labelId")
+    result = do_query(id, label_id)
     print(result)
     return get_response(result)
 

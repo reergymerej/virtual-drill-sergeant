@@ -5,6 +5,7 @@ import * as api from './api'
 const FeedbackItem = (props) => {
   const [voting, setVoting] = useState(false)
   const [updatedVote, setUpdatedVote] = useState(null)
+  const [hide, setHide] = useState(false)
 
   const handleVote = () => {
     props.onMessage('submitting vote')
@@ -21,26 +22,60 @@ const FeedbackItem = (props) => {
       })
   }
 
+  const addLabel = (labelId) => () => {
+    props.onMessage('adding label')
+    const id = props.item.id
+    api.feedbackLabel(id, labelId)
+      .then(() => {
+        props.onMessage('label saved')
+        setHide(true)
+      })
+      .catch(e => {
+        console.error(e)
+        props.onMessage('unable to save label')
+      })
+  }
+
+  const junk = addLabel(1)
+  const implemented = addLabel(2)
+
   return (
     <div className="FeedbackItem">
       <p>
         {props.item.text}
       </p>
       <div className="tools">
-        <button
-          onClick={handleVote}
-          disabled={voting}
-        >
-          <span role="img" aria-label="your mom">
-            👍
+        <div>
+          <button
+            onClick={handleVote}
+            disabled={hide || voting}
+          >
+            <span role="img" aria-label="your mom">
+              👍
+            </span>
+          </button>
+          <span>
+            {updatedVote === null
+              ? props.item.votes
+              : updatedVote
+            }
           </span>
-        </button>
-        <span>
-          {updatedVote === null
-            ? props.item.votes
-            : updatedVote
-          }
-        </span>
+        </div>
+
+        <div className="labels">
+          <button
+            disabled={hide}
+            onClick={junk}
+          >
+            Junk
+          </button>
+          <button
+            disabled={hide}
+            onClick={implemented}
+          >
+            Implemented
+          </button>
+        </div>
       </div>
     </div>
   )

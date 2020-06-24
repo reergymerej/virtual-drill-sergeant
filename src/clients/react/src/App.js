@@ -268,7 +268,7 @@ const App = () => {
           'commands',
           'feedback',
         ]}
-        initialTab={0}
+        initialTab={2}
       >
         <div>
           <Log
