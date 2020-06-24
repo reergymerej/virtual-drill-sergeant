@@ -25,3 +25,11 @@ export const feedbackRead = () => {
       text: row[1],
     })))
 }
+
+export const feedbackVote = (voteId) => {
+  const url = `${apiUrl}/feedback/${voteId}/vote`
+  return fetch(url, {
+    method: 'POST',
+  })
+    .then(x => x.json())
+}

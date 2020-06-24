@@ -3,11 +3,35 @@ import './Feedback.css'
 import * as api from './api'
 
 const FeedbackItem = (props) => {
+  const [voting, setVoting] = useState(false)
+
+  const handleVote = () => {
+    props.onMessage('submitting vote')
+    setVoting(true)
+    const id = props.item.id
+    api.feedbackVote(id)
+      .then(_x => {
+        props.onMessage('vote saved, thanks')
+      })
+      .catch(e => {
+        console.error(e)
+        props.onMessage('unable to rock the vote')
+      })
+  }
+
   return (
     <div className="FeedbackItem">
       <p>
-        {props.text}
+        {props.item.text}
       </p>
+      <button
+        onClick={handleVote}
+        disabled={voting}
+      >
+        <span role="img" aria-label="your mom">
+      👍
+        </span>
+      </button>
     </div>
   )
 }
@@ -49,7 +73,13 @@ const Feedback = (props) => {
       </h3>
 
       { feedback.map((item) => {
-          return <FeedbackItem key={item.id} text={item.text} />
+          return (
+            <FeedbackItem
+              key={item.id}
+              item={item}
+              onMessage={props.onMessage}
+            />
+          )
       }) }
     </div>
   )

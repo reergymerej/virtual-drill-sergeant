@@ -403,3 +403,26 @@ curl -X POST "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/Virtua
   order by f.id desc
 
   curl "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/{phone}/feedback" -i
+
+# Tue Jun 23 18:19:09 PDT 2020
+
+Allow me to upvote feedback to help separate the good from the bad.
+
+Simplest possible approach:
+* add count to feedback table
+* create query
+* create lambda vds_feedback_vote
+* api POST feedback/id/vote
+* client
+
+This will not track voter identity, so it can be abused.  Handle that once abuse
+it an issue.
+
+    update feedback
+    set votes = votes + 1
+    where id = 25
+
+curl "https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/feedback/25/vote" \
+  -i \
+  -X POST
+
