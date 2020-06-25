@@ -61,3 +61,62 @@ export const getNextSolution = () => {
       solution: x[1],
     }))
 }
+
+export const feebackCreate = (value) => {
+  const url = `${apiUrl}/feedback`
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text: value,
+    }),
+  }).then(x => x.json())
+}
+
+export const agentUpdate = (userId, active) => {
+  const url = `${apiUrl}/${userId}/agent`
+  return fetch(url, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      active,
+    }),
+  }).then(x => x.json())
+}
+
+export const commandChange = (userId, userCommandId, enabled, commandId) => {
+    const isUpdate = !!userCommandId
+    const method = isUpdate ? 'PATCH' : 'POST'
+    const url = isUpdate
+      ? `${apiUrl}/${userId}/commands/${userCommandId}`
+      : `${apiUrl}/${userId}/commands`
+    return fetch(url, {
+      method,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        enabled,
+        commandId,
+      }),
+    })
+      .then(x => x.json())
+}
+
+export const commandCreate = (text) => {
+  const url = `${apiUrl}/commands`
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text,
+    }),
+  })
+    .then(x => x.json())
+}

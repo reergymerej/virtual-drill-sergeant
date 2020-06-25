@@ -4,6 +4,7 @@ import Log from './Log'
 import Tabs from './Tabs'
 import Commands from './Commands'
 import Feedback from './Feedback'
+import * as api from './api'
 
 const getQuery = () => {
   if (window.location.search) {
@@ -71,16 +72,7 @@ const App = () => {
   }, [ajax, message, setEnabledByStatus])
 
   const updateAgent = async (active) => {
-    const url = `${apiUrl}/${userId}/agent`
-      return await fetch(url, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          active,
-        }),
-      }).then(x => x.json())
+    await api.agentUpdate(userId, active)
   }
 
   const enableClickHandler = async () => {
@@ -121,22 +113,7 @@ const App = () => {
   }, [ajax, logValues, message])
 
   const changeCommand = (userId, userCommandId, enabled, commandId) => {
-    const isUpdate = !!userCommandId
-    const method = isUpdate ? 'PATCH' : 'POST'
-    const url = isUpdate
-      ? `${apiUrl}/${userId}/commands/${userCommandId}`
-      : `${apiUrl}/${userId}/commands`
-    return fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        enabled,
-        commandId,
-      }),
-    })
-      .then(x => x.json())
+    return api.commandChange(userId, userCommandId, enabled, commandId)
   }
 
   const loadUserCommands = useCallback(async () => {
@@ -149,17 +126,7 @@ const App = () => {
 
   const createNewCommand = async (text) => {
     message('Saving new command')
-    const url = `${apiUrl}/commands`
-    await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        text,
-      }),
-    })
-      .then(x => x.json())
+    await api.commandCreate(text)
     setNewCommandText('')
     loadUserCommands()
   }
@@ -227,17 +194,8 @@ const App = () => {
   const handleFeedbackSubmit = async (value) => {
     setFeedbackSaving(true)
     message('saving feedback')
-    const url = `${apiUrl}/feedback`
     try {
-      const result = await fetch(url, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          text: value,
-        }),
-      }).then(x => x.json())
+      const result = await api.feebackCreate(value)
       setFeedback('')
       message('feedback saved, thank you!')
       console.log({result})
