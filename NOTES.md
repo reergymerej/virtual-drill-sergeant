@@ -475,3 +475,8 @@ curl -X PUT \
 PROBLEM: I want the program to improve, but I don't know if it will.
 SOLUTION: Show what is being developed next.
 SIMPLEST: Update the html to show what's next.
+
+
+## Can you make an audio option so I can hear someone yell the commands at me?
+
+PROBLEM: It's not as fun as I want it to be.
