@@ -90,6 +90,9 @@ const Feedback = (props) => {
     onMessage('loading feedback')
     api.feedbackRead()
       .then(setFeedback)
+      .then(() => {
+        onMessage('')
+      })
       .catch(e => {
         console.error(e)
         onMessage('unable to load feedback')
