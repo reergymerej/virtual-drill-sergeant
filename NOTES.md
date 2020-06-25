@@ -480,3 +480,9 @@ SIMPLEST: Update the html to show what's next.
 ## Can you make an audio option so I can hear someone yell the commands at me?
 
 PROBLEM: It's not as fun as I want it to be.
+
+## Log tab should open first.
+
+PROBLEM: The wrong feedback tab opens by default.
+SOLUTION:
+
