@@ -97,6 +97,24 @@ const Feedback = (props) => {
 
   return (
     <div className="Feedback">
+      <div>
+        <h3>
+          What problem is being solved now?
+        </h3>
+        <p>
+          <strong>Problem:</strong>&nbsp;
+          Users want to know that the program is improving and feedback is
+          worthwhile.
+        </p>
+        <p>
+          <strong>Solution:</strong>&nbsp;
+          Show what is being developed next.
+        </p>
+      </div>
+
+      <h3>
+        What should come next?
+      </h3>
       <form
         onSubmit={e => {
           e.preventDefault()
@@ -113,9 +131,6 @@ const Feedback = (props) => {
         <button disabled={props.disable}>Submit</button>
       </form>
 
-      <h3>
-        Here is the feedback we're already tracking.
-      </h3>
 
       { feedback.map((item) => {
           return (

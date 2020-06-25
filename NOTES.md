@@ -467,3 +467,11 @@ curl -X PUT \
   https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/feedback/12/label \
   --header 'Content-Type: application/json' \
   --data '{"labelId":2}'
+
+# Wed Jun 24 19:32:57 PDT 2020
+
+## Show what is currently under development so we see how feedback is addressed.
+
+PROBLEM: I want the program to improve, but I don't know if it will.
+SOLUTION: Show what is being developed next.
+SIMPLEST: Update the html to show what's next.
