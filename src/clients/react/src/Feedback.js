@@ -26,7 +26,7 @@ const FeedbackItem = (props) => {
   const addLabel = (labelId) => () => {
     props.onMessage('adding label')
     const id = props.item.id
-    api.feedbackLabel(id, labelId)
+    api.feedbackLabel(props.userId, id, labelId)
       .then(() => {
         props.onMessage('label saved')
         setHide(true)
@@ -88,7 +88,7 @@ const Feedback = (props) => {
 
   useEffect(() => {
     onMessage('loading feedback')
-    api.feedbackRead()
+    api.feedbackRead(props.userId)
       .then(setFeedback)
       .then(() => {
         onMessage('')
@@ -97,7 +97,7 @@ const Feedback = (props) => {
         console.error(e)
         onMessage('unable to load feedback')
       })
-  }, [onMessage])
+  }, [onMessage, props.userId])
 
   return (
     <div className="Feedback">
@@ -128,6 +128,7 @@ const Feedback = (props) => {
               key={item.id}
               item={item}
               onMessage={props.onMessage}
+              userId={props.userId}
             />
           )
       }) }

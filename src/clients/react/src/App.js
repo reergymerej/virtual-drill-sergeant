@@ -19,11 +19,8 @@ const getQuery = () => {
   return {}
 }
 const query = getQuery()
+const userId = query.id || '1'
 const logId = query['log-id']
-const phone = query.id || '1'
-const userId = phone
-const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
-const getCompleteUrl = (logId) => `${apiUrl}/${userId}/logs/${logId}`
 
 const App = () => {
   const [enabled, setEnabled] = useState(false)
@@ -40,13 +37,6 @@ const App = () => {
     return message
   }, [setMessage])
 
-  const ajax = useCallback((url, method = 'GET') => fetch(url, { method })
-    .then(x => x.json())
-    .catch((e) => {
-      console.error(e)
-      message('It did not work.')
-    }), [message])
-
   const setEnabledByStatus = useCallback((active) => {
     setEnabled(active)
   }, [setEnabled])
@@ -54,12 +44,7 @@ const App = () => {
   const checkStatus = useCallback(() => {
     message('Checking status...')
     setFetchingStatus(true)
-    const url = `${apiUrl}/${userId}/agent`
-    return ajax(url)
-      .then(x => {
-        const active = x[0][0]
-        return active
-      })
+    return api.status(userId)
       .then(resp => setEnabledByStatus(resp))
       .then(() => message(''))
       .catch(error => {
@@ -69,7 +54,7 @@ const App = () => {
         setFetchingStatus(false)
         return x
       })
-  }, [ajax, message, setEnabledByStatus])
+  }, [message, setEnabledByStatus])
 
   const updateAgent = async (active) => {
     await api.agentUpdate(userId, active)
@@ -97,8 +82,7 @@ const App = () => {
 
   const completeTask = useCallback(async (logId) => {
     message('Completing task...')
-    const url = getCompleteUrl(logId)
-    await ajax(url, 'PATCH')
+    await api.taskComplete(userId)
     message('Task completed')
     console.log({logValues})
     const updatedValues = logValues.map(x => {
@@ -110,17 +94,17 @@ const App = () => {
       return x
     })
     setLog(updatedValues)
-  }, [ajax, logValues, message])
+  }, [logValues, message])
 
-  const changeCommand = (userId, userCommandId, enabled, commandId) => {
+  const changeCommand = (userCommandId, enabled, commandId) => {
     return api.commandChange(userId, userCommandId, enabled, commandId)
   }
 
   const loadUserCommands = useCallback(async () => {
     message('Loading commands')
-    const commands = await ajax(`${apiUrl}/${phone}/commands`)
+    const commands = await api.commandsLoad(userId)
     setCommandValues(commands)
-  }, [ajax, message])
+  }, [message])
 
   const [newCommandText, setNewCommandText] = useState('')
 
@@ -150,19 +134,13 @@ const App = () => {
   // load log
   useEffect(() => {
     if (loadLog) {
-      const getLog = async () => {
-        const url = `${apiUrl}/${phone}/logs`
-        return ajax(url)
-      }
-
       const x = async () => {
-        const logData = await getLog()
+        const logData = await api.logLoad(userId)
         setLog(logData)
       }
-
       x()
     }
-  }, [loadLog, setLog, ajax])
+  }, [loadLog, setLog])
 
   useEffect(() => {
     loadUserCommands()
@@ -170,7 +148,7 @@ const App = () => {
 
   const onUserCommandChange = async (id, enabled, commandId) => {
     message('saving')
-    const result = await changeCommand(userId, id, enabled, commandId)
+    const result = await changeCommand(id, enabled, commandId)
     const [updatedId, nextEnabledValue] = result
     const newValues = commandValues.map(x => {
       if (x[0] === updatedId) {
@@ -249,6 +227,7 @@ const App = () => {
           onMessage={message}
           onSubmit={handleFeedbackSubmit}
           value={feedback}
+          userId={userId}
         />
       </Tabs>
     </div>

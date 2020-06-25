@@ -1,79 +1,5 @@
-const getQuery = () => {
-  if (window.location.search) {
-    return window.location.search.substring(1).split('&').reduce((acc, pair) => {
-      const [key, value] = pair.split('=')
-      return {
-        ...acc,
-        [key]: value,
-      }
-    }, {})
-  }
-  return {}
-}
-const query = getQuery()
-const phone = query.id || '1'
 const apiUrl = 'https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant'
-
-export const feedbackRead = () => {
-  const url = `${apiUrl}/${phone}/feedback`
-  return fetch(url, {
-    method: 'GET',
-  })
-    .then(x => x.json())
-    .then(x => x.map(row => ({
-      id: row[0],
-      text: row[1],
-      votes: row[2],
-    })))
-}
-
-export const feedbackVote = (id) => {
-  const url = `${apiUrl}/feedback/${id}/vote`
-  return fetch(url, {
-    method: 'POST',
-  })
-    .then(x => x.json())
-}
-
-export const feedbackLabel = (id, labelId) => {
-  const url = `${apiUrl}/${phone}/feedback/${id}/label`
-  return fetch(url, {
-    method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      labelId,
-    }),
-  })
-    .then(x => x.json())
-    .then(x => x.length > 1)
-}
-
-export const getNextSolution = () => {
-  const url = `${apiUrl}/solutions`
-  return fetch(url, {
-    method: 'GET',
-  })
-    .then(x => x.json())
-    .then(x => ({
-      problem: x[0],
-      solution: x[1],
-    }))
-}
-
-export const feebackCreate = (value) => {
-  const url = `${apiUrl}/feedback`
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      text: value,
-    }),
-  }).then(x => x.json())
-}
+const getCompleteUrl = (userId, logId) => `${apiUrl}/${userId}/logs/${logId}`
 
 export const agentUpdate = (userId, active) => {
   const url = `${apiUrl}/${userId}/agent`
@@ -118,5 +44,96 @@ export const commandCreate = (text) => {
       text,
     }),
   })
+    .then(x => x.json())
+}
+
+export const commandsLoad = (userId) => {
+  return fetch(`${apiUrl}/${userId}/commands`)
+    .then(x => x.json())
+}
+
+export const feedbackRead = (userId) => {
+  const url = `${apiUrl}/${userId}/feedback`
+  return fetch(url, {
+    method: 'GET',
+  })
+    .then(x => x.json())
+    .then(x => x.map(row => ({
+      id: row[0],
+      text: row[1],
+      votes: row[2],
+    })))
+}
+
+export const feedbackVote = (id) => {
+  const url = `${apiUrl}/feedback/${id}/vote`
+  return fetch(url, {
+    method: 'POST',
+  })
+    .then(x => x.json())
+}
+
+export const feedbackLabel = (userId, id, labelId) => {
+  const url = `${apiUrl}/${userId}/feedback/${id}/label`
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      labelId,
+    }),
+  })
+    .then(x => x.json())
+    .then(x => x.length > 1)
+}
+
+export const feebackCreate = (value) => {
+  const url = `${apiUrl}/feedback`
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      text: value,
+    }),
+  }).then(x => x.json())
+}
+
+export const getNextSolution = () => {
+  const url = `${apiUrl}/solutions`
+  return fetch(url, {
+    method: 'GET',
+  })
+    .then(x => x.json())
+    .then(x => ({
+      problem: x[0],
+      solution: x[1],
+    }))
+}
+
+export const status = (userId) => {
+    const url = `${apiUrl}/${userId}/agent`
+    return fetch(url)
+      .then(x => x.json())
+      .then(x => {
+        const active = x[0][0]
+        return active
+      })
+}
+
+export const taskComplete = (userId, logId) => {
+  const url = getCompleteUrl(userId, logId)
+  return fetch(url, {
+    method: 'PATCH',
+  })
+    .then(x => x.json())
+}
+
+
+export const logLoad = (userId) => {
+  const url = `${apiUrl}/${userId}/logs`
+  return fetch(url)
     .then(x => x.json())
 }
