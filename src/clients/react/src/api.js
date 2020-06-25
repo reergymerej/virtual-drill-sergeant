@@ -49,3 +49,15 @@ export const feedbackLabel = (id, labelId) => {
     .then(x => x.json())
     .then(x => x.length > 1)
 }
+
+export const getNextSolution = () => {
+  const url = `${apiUrl}/solutions`
+  return fetch(url, {
+    method: 'GET',
+  })
+    .then(x => x.json())
+    .then(x => ({
+      problem: x[0],
+      solution: x[1],
+    }))
+}
