@@ -5,7 +5,7 @@ const UserCommands = (props) => {
   return (
     <div className="UserCommands">
       {props.rows.map(userCommand => {
-        const [id, text, enabled, commandId] = userCommand
+        const { userCommandId, text, enabled, commandId } = userCommand
         return (
           <div
             key={commandId}
@@ -16,7 +16,7 @@ const UserCommands = (props) => {
                 type="checkbox"
                 checked={enabled}
                 onChange={() => {
-                  props.onChange(id, !enabled, commandId)
+                  props.onChange(userCommandId, !enabled, commandId)
                 }}
               />
               <p>

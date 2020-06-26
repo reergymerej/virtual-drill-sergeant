@@ -15,22 +15,29 @@ export const agentUpdate = (userId, active) => {
 }
 
 export const commandChange = (userId, userCommandId, enabled, commandId) => {
-    const isUpdate = !!userCommandId
-    const method = isUpdate ? 'PATCH' : 'POST'
-    const url = isUpdate
-      ? `${apiUrl}/${userId}/commands/${userCommandId}`
-      : `${apiUrl}/${userId}/commands`
-    return fetch(url, {
-      method,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+  const isUpdate = !!userCommandId
+  const method = isUpdate ? 'PATCH' : 'POST'
+  const url = isUpdate
+    ? `${apiUrl}/${userId}/commands/${userCommandId}`
+    : `${apiUrl}/${userId}/commands`
+  return fetch(url, {
+    method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      enabled,
+      commandId,
+    }),
+  })
+    .then(x => x.json())
+    .then(x => {
+      const [userCommandId, enabled] = x
+      return {
+        userCommandId,
         enabled,
-        commandId,
-      }),
+      }
     })
-      .then(x => x.json())
 }
 
 export const commandCreate = (text) => {
@@ -50,6 +57,17 @@ export const commandCreate = (text) => {
 export const commandsLoad = (userId) => {
   return fetch(`${apiUrl}/${userId}/commands`)
     .then(x => x.json())
+    .then(x => {
+      return x.map(y => {
+        const [userCommandId, text, enabled, commandId] = y
+        return {
+          userCommandId,
+          text,
+          enabled,
+          commandId,
+        }
+      })
+    })
 }
 
 export const feedbackRead = (userId) => {
@@ -130,7 +148,6 @@ export const taskComplete = (userId, logId) => {
   })
     .then(x => x.json())
 }
-
 
 export const logLoad = (userId) => {
   const url = `${apiUrl}/${userId}/logs`

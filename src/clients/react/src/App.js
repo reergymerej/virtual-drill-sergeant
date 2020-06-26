@@ -82,7 +82,7 @@ const App = () => {
 
   const completeTask = useCallback(async (logId) => {
     message('Completing task...')
-    await api.taskComplete(userId)
+    await api.taskComplete(userId, logId)
     message('Task completed')
     console.log({logValues})
     const updatedValues = logValues.map(x => {
@@ -96,8 +96,19 @@ const App = () => {
     setLog(updatedValues)
   }, [logValues, message])
 
-  const changeCommand = (userCommandId, enabled, commandId) => {
-    return api.commandChange(userId, userCommandId, enabled, commandId)
+  const changeCommand = async (userCommandId, enabled, commandId) => {
+    const result = await api.commandChange(userId, userCommandId, enabled, commandId)
+    setCommandValues(
+      commandValues.map(x => {
+        if (x.commandId === commandId) {
+          return {
+            ...x,
+            enabled: result.enabled,
+          }
+        }
+        return x
+      })
+    )
   }
 
   const loadUserCommands = useCallback(async () => {
@@ -146,19 +157,10 @@ const App = () => {
     loadUserCommands()
   }, [loadUserCommands])
 
-  const onUserCommandChange = async (id, enabled, commandId) => {
+  const onUserCommandChange = async (userCommandId, enabled, commandId) => {
+    console.log({userId, enabled, commandId})
     message('saving')
-    const result = await changeCommand(id, enabled, commandId)
-    const [updatedId, nextEnabledValue] = result
-    const newValues = commandValues.map(x => {
-      if (x[0] === updatedId) {
-        const newValue = [...x]
-        newValue[2] = nextEnabledValue
-        return newValue
-      }
-      return x
-    })
-    setCommandValues(newValues)
+    await changeCommand(userCommandId, enabled, commandId)
     message('saved')
   }
 
