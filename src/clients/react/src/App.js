@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import './App.css';
 import Log from './Log'
-import Tabs from './Tabs'
+import Tabs, { getTabFromUrl } from './Tabs'
 import Commands from './Commands'
 import Feedback from './Feedback'
 import * as api from './api'
@@ -21,6 +21,7 @@ const getQuery = () => {
 const query = getQuery()
 const userId = query.id || '1'
 const logId = query['log-id']
+const tab = getTabFromUrl()
 
 const App = () => {
   const [enabled, setEnabled] = useState(false)
@@ -206,7 +207,7 @@ const App = () => {
           'commands',
           'feedback',
         ]}
-        initialTab={0}
+        initialTab={tab}
       >
         <div>
           <Log
@@ -216,6 +217,7 @@ const App = () => {
         </div>
         <div>
           <Commands
+            onMessage={message}
             commands={commandValues}
             createNewCommand={createNewCommand}
             newCommandText={newCommandText}

@@ -1,6 +1,7 @@
 import React  from 'react'
 import NewCommand from './NewCommand'
 import UserCommands from './UserCommands'
+import CommandGroups from './CommandGroups'
 
 const Commands = (props) => {
   return (
@@ -8,6 +9,10 @@ const Commands = (props) => {
       <p>
         Select the commands you want to receive.
       </p>
+      <CommandGroups
+        onMessage={props.onMessage}
+      />
+
       {props.commands && (
         <UserCommands
           rows={props.commands}

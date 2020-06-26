@@ -4,14 +4,17 @@ import os
 
 def do_query(user_id):
     query = """
-        select '{user_id}'
+        select ucg.id
+        ,ucg.name
+        from user_command_groups ucg
+        where user_id = {user_id}
     """.format(
         user_id = user_id,
     )
     print(query)
-    if os.getenv('DEV'):
-        print("skipping db")
-        return
+    # if os.getenv('DEV'):
+    #     print("skipping db")
+    #     return
     return db.all(query)
 
 def get_path_param(event, param):

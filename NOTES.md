@@ -486,3 +486,66 @@ PROBLEM: It's not as fun as I want it to be.
 PROBLEM: The wrong feedback tab opens by default.
 SOLUTION:
 
+
+# Fri Jun 26 13:46:59 PDT 2020
+
+From now on, user 1 is the system user.
+
+select ucg.id
+,ucg.name
+from user_command_groups ucg
+where user_id = 1
+
+curl https://cmsvl04jha.execute-api.us-east-1.amazonaws.com/prod/VirtualDrillSergeant/1/commands/group
+
+# Fri Jun 26 15:05:33 PDT 2020
+need endpoint to select by group
+
+
+
+---------------
+-- Update user 4's user_commands based on user 1's group # 9
+select *
+from ucg_values v
+where v.user_command_group_id = 9
+;
+
+
+-- What commands are these?
+select c.id
+,c.text
+from ucg_values v
+join user_commands uc on uc.id = v.user_command_id
+join commands c on c.id = uc.command_id
+where v.user_command_group_id = 9
+;
+
+
+-- Upsert these commands into the destination user's commands.
+insert into user_commands (user_id, command_id)
+select 4, c.id -- specify user id
+from ucg_values v
+join user_commands uc on uc.id = v.user_command_id
+join commands c on c.id = uc.command_id
+where v.user_command_group_id = 9
+on conflict
+do nothing
+;
+
+
+-- enable/disable commands commands
+update user_commands
+set enabled = (
+	command_id in (
+		-- user commands for this user
+		select c.id
+		from ucg_values v
+		join user_commands uc on uc.id = v.user_command_id
+		join commands c on c.id = uc.command_id
+		where v.user_command_group_id = 9
+
+	)
+)
+where user_id = 4
+returning id, enabled
+;

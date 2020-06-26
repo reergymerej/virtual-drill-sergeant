@@ -154,3 +154,17 @@ export const logLoad = (userId) => {
   return fetch(url)
     .then(x => x.json())
 }
+
+export const groupsRead = (userId) => {
+  const url = `${apiUrl}/${userId}/commands/group`
+  return fetch(url)
+    .then(x => x.json())
+    .then(x => x.map(y => ({
+      id: y[0],
+      name: y[1],
+    })))
+}
+
+export const selectGroup = (id) => {
+  return Promise.resolve('xxx')
+}
