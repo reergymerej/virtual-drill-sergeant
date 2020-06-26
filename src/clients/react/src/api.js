@@ -165,6 +165,14 @@ export const groupsRead = (userId) => {
     })))
 }
 
-export const selectGroup = (id) => {
-  return Promise.resolve('xxx')
+export const groupActivate = (userId, id) => {
+  const url = `${apiUrl}/${userId}/commands/group/${id}/activate`
+  return fetch(url, {
+    method: 'POST',
+  })
+    .then(x => x.json())
+    .then(x => x.map(y => ({
+      userCommandId: y[0],
+      enabled: y[1],
+    })))
 }

@@ -14,7 +14,11 @@ const CommandGroups = (props) => {
   const selectGroup = (id) => {
     setIsWaiting(true)
     props.onMessage('selecting group')
-    api.selectGroup(id)
+    api.groupActivate(props.userId, id)
+      .then(commands => {
+        console.log({commands})
+        props.onCommandsUpdated(commands)
+      })
       .catch(() =>
         props.onMessage('There was a problem selecting the group.')
       )

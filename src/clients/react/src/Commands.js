@@ -11,6 +11,8 @@ const Commands = (props) => {
       </p>
       <CommandGroups
         onMessage={props.onMessage}
+        onCommandsUpdated={props.onCommandsUpdated}
+        userId={props.userId}
       />
 
       {props.commands && (

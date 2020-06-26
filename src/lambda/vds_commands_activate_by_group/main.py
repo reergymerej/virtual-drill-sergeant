@@ -73,7 +73,7 @@ def get_response(body):
 def lambda_handler(event, context):
     print(event)
     user_id = get_path_param(event, "phone")
-    group_id = get_path_param(event, "group_id")
+    group_id = get_path_param(event, "group-id")
     result = do_query(user_id, group_id)
     print(result)
     return get_response(result)

@@ -32,6 +32,16 @@ const App = () => {
   const [loadLog, setLoadLog] = useState(!autoCompleteTask)
   const [fetchingStatus, setFetchingStatus] = useState(false)
 
+  const onCommandsUpdated = (commands) => {
+    const newCommands = commandValues.map(x => {
+      return {
+        ...x,
+        enabled: commands.find(y => y.userCommandId === x.userCommandId).enabled,
+      }
+    })
+    setCommandValues(newCommands)
+  }
+
   const message = useCallback((message) => {
     console.log(message)
     setMessage(message)
@@ -217,6 +227,8 @@ const App = () => {
         </div>
         <div>
           <Commands
+            userId={userId}
+            onCommandsUpdated={onCommandsUpdated}
             onMessage={message}
             commands={commandValues}
             createNewCommand={createNewCommand}
