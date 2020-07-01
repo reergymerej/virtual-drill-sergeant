@@ -574,3 +574,10 @@ To generate audio, we can start by doing it manually.
 Then create a lambda to do it.
 When a command is created, generate the new file.  Put it in S3.
 Load the file from there.
+
+# Wed Jul  1 10:12:21 PDT 2020
+
+API Gateway will pin to a lambda version.  :)
+
+How do we load a media file from S3?
+Just make a public bucket, plop it in, update the url in the db.

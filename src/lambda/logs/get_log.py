@@ -19,11 +19,12 @@ def get_response(body):
 def get_log(user_id):
     sql = """
         select command_log.id
-            ,commands.text
+            ,c.text
             ,command_log.executed
+            ,c.audio
         from command_log
         join user_commands on user_commands.id = command_log.user_commands_id
-        join commands on commands.id = user_commands.command_id
+        join commands c on c.id = user_commands.command_id
         where user_commands.user_id = {user_id}
         order by command_log.created_at desc
     """.format(user_id=user_id)

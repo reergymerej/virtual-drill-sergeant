@@ -178,10 +178,12 @@ const App = () => {
       setLoadCurrentCommand(false)
       const id = parseInt(currentUserCommand)
       api.logLoadOne(userId, id)
-        .then(({id, text}) => {
+        .then(({id, text, completed, audio}) => {
           setLoadedCommand({
             id,
             text,
+            completed,
+            audio,
           })
         })
     }
@@ -221,15 +223,14 @@ const App = () => {
   }
 
   const tabs = [
-    'log',
     loadedCommand && 'execute',
+    'log',
     'commands',
     'feedback',
   ]
 
   return (
     <div className="App">
-
       <h1 className="center">Virtual Drill Sergeant</h1>
       <div className="center">
         {
@@ -246,19 +247,21 @@ const App = () => {
         names={tabs}
         initialTab={tab}
       >
+        {loadedCommand &&
+          <Execute
+            audio={loadedCommand.audio}
+            completed={loadedCommand.completed}
+            id={loadedCommand.id}
+            onComplete={handleOnComplete}
+            text={loadedCommand.text}
+          />
+        }
         <div>
           <Log
             completeTask={completeTask}
             rows={logValues}
           />
         </div>
-        {loadedCommand &&
-        <Execute
-          text={loadedCommand.text}
-          onComplete={handleOnComplete}
-          id={loadedCommand.id}
-        />
-        }
         <div>
           <Commands
             userId={userId}

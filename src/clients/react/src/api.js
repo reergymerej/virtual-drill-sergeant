@@ -165,6 +165,8 @@ export const logLoadOne = (userId, logId) => {
     .then(x => ({
       id: x[0],
       text: x[1],
+      completed: x[2],
+      audio: x[3],
     }))
 }
 
