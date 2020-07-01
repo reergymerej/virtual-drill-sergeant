@@ -549,3 +549,28 @@ set enabled = (
 where user_id = 4
 returning id, enabled
 ;
+
+# Tue Jun 30 21:17:56 PDT 2020
+https://docs.aws.amazon.com/polly/latest/dg/get-started-what-next.html
+
+See about reading the commands.
+* Figure out flow for creating mp3s for new text.
+* Change audio when text changes.
+* How can we play them to the client?
+
+
+      <audio autoPlay>
+        <source src="speech_20200701042052201.mp3" type="audio/mpeg"/>
+      </audio>
+
+We can auto-play on the web.  Can we send an audio message?
+
+## First Solution
+Create a page that autoplays the audio.
+Add that as a link to the command.
+If a user wants to hear the command, they can click that link.
+
+To generate audio, we can start by doing it manually.
+Then create a lambda to do it.
+When a command is created, generate the new file.  Put it in S3.
+Load the file from there.

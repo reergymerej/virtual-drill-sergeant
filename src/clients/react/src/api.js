@@ -155,6 +155,19 @@ export const logLoad = (userId) => {
     .then(x => x.json())
 }
 
+export const logLoadOne = (userId, logId) => {
+  return logLoad(userId)
+    .then(x => {
+      return x.find(y => {
+        return y[0] === logId
+      })
+    })
+    .then(x => ({
+      id: x[0],
+      text: x[1],
+    }))
+}
+
 export const groupsRead = (userId) => {
   const url = `${apiUrl}/${userId}/commands/group`
   return fetch(url)

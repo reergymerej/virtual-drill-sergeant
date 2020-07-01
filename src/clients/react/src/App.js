@@ -4,6 +4,7 @@ import Log from './Log'
 import Tabs, { getTabFromUrl } from './Tabs'
 import Commands from './Commands'
 import Feedback from './Feedback'
+import Execute from './Execute'
 import * as api from './api'
 
 const getQuery = () => {
@@ -21,6 +22,7 @@ const getQuery = () => {
 const query = getQuery()
 const userId = query.id || '1'
 const logId = query['log-id']
+const currentUserCommand = query['c']
 const tab = getTabFromUrl()
 
 const App = () => {
@@ -168,6 +170,23 @@ const App = () => {
     loadUserCommands()
   }, [loadUserCommands])
 
+  const [loadCurrentCommand, setLoadCurrentCommand] = useState(currentUserCommand !== undefined)
+  const [loadedCommand, setLoadedCommand] = useState(null)
+
+  useEffect(() => {
+    if (loadCurrentCommand) {
+      setLoadCurrentCommand(false)
+      const id = parseInt(currentUserCommand)
+      api.logLoadOne(userId, id)
+        .then(({id, text}) => {
+          setLoadedCommand({
+            id,
+            text,
+          })
+        })
+    }
+  }, [loadCurrentCommand])
+
   const onUserCommandChange = async (userCommandId, enabled, commandId) => {
     console.log({userId, enabled, commandId})
     message('saving')
@@ -197,8 +216,20 @@ const App = () => {
     setFeedbackSaving(false)
   }
 
+  const handleOnComplete = async (id) => {
+    await completeTask(id)
+  }
+
+  const tabs = [
+    'log',
+    loadedCommand && 'execute',
+    'commands',
+    'feedback',
+  ]
+
   return (
     <div className="App">
+
       <h1 className="center">Virtual Drill Sergeant</h1>
       <div className="center">
         {
@@ -212,11 +243,7 @@ const App = () => {
         <div id="output" className="mono center padding fontColor">{messageValue}</div>
       </div>
       <Tabs
-        names={[
-          'log',
-          'commands',
-          'feedback',
-        ]}
+        names={tabs}
         initialTab={tab}
       >
         <div>
@@ -225,6 +252,13 @@ const App = () => {
             rows={logValues}
           />
         </div>
+        {loadedCommand &&
+        <Execute
+          text={loadedCommand.text}
+          onComplete={handleOnComplete}
+          id={loadedCommand.id}
+        />
+        }
         <div>
           <Commands
             userId={userId}
