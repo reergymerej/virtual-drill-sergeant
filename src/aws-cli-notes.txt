@@ -7,7 +7,10 @@ aws lambda create-function \
 
 aws lambda invoke \
   --function-name get_log \
-  out
+  --payload file://event.json \
+  out \
+  --log-type Tail \
+  --query 'LogResult' --output text |  base64 --decode
 
 aws lambda update-function-code \
   --function-name get_log \
@@ -24,3 +27,13 @@ aws cloudfront list-invalidations \
 aws cloudfront create-invalidation \
   --distribution-id E3FIP03GLPOWQS \
   --paths "/*"
+
+
+
+aws lambda add-permission \
+  --function-name vds_command_generate_audio \
+  --action lambda:InvokeFunction \
+  --statement-id AllowGenerateAudioInvocation \
+  --principal "*" \
+  --output text
+

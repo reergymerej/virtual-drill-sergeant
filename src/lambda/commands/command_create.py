@@ -1,6 +1,7 @@
 import db
 import json
 import os
+import boto3
 
 def create_command(text):
     query = """
@@ -33,10 +34,26 @@ def get_response(body):
         "body": json.dumps(body),
     }
 
+def send_for_soundification(id, text):
+    client = boto3.client('lambda')
+    data = {
+        'id': id,
+        'text': text,
+    }
+    print(data)
+    response = client.invoke(
+        FunctionName='vds_command_generate_audio',
+        InvocationType='Event',
+        Payload=json.dumps(data),
+    )
+
 def lambda_handler(event, context):
     print(event)
     text = get_command_text(event)
     result = create_command(text)
+    id = result[0][0]
+    text = result[0][1]
+    send_for_soundification(id, text)
     return get_response(result)
 
 if __name__ == '__main__':
