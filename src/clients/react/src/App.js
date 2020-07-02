@@ -186,8 +186,12 @@ const App = () => {
             audio,
           })
         })
+        .catch(error => {
+          console.log(error)
+          message('unable to load this command')
+        })
     }
-  }, [loadCurrentCommand])
+  }, [loadCurrentCommand, message])
 
   const onUserCommandChange = async (userCommandId, enabled, commandId) => {
     console.log({userId, enabled, commandId})

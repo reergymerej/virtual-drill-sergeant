@@ -9,25 +9,21 @@ import os
 import subprocess
 import sys
 
-
-def do_query(user_id):
+def update_command_entry(id, audio):
     query = """
-        select '{user_id}'
+        update commands
+        set audio = '{audio}'
+        where id = {id}
+        returning *
     """.format(
-        user_id = user_id,
+        audio = audio,
+        id = id,
     )
     print(query)
     if os.getenv('DEV'):
         print("skipping db")
         return
-    return db.all(query)
-
-def get_path_param(event, param):
-    return int(event.get("pathParameters", {}).get(param, None))
-
-def get_from_body(event, value):
-    body = json.loads(event.get("body", "{}"))
-    return body.get(value, "")
+    return db.insert(query)
 
 def get_response(body):
     return {
@@ -85,11 +81,14 @@ def save_to_s3(source_file, destination_file):
     print(destination_file)
     s3_client = boto3.client('s3')
     bucket = 'jex-vds-audio'
-    key = 'new-audio.mp3'
     s3_client.upload_file(
         Filename=source_file,
         Bucket=bucket,
         Key=destination_file
+    )
+    return "https://{bucket}.s3.amazonaws.com/{destination_file}".format(
+        bucket=bucket,
+        destination_file=destination_file,
     )
 
 def lambda_handler(event, context):
@@ -99,14 +98,29 @@ def lambda_handler(event, context):
     id = event.get('id')
     print(id)
     print(text)
-    # user_id = get_path_param(event, "phone")
-    # result = do_query(user_id)
     audio_file = get_audio_file(text)
     new_file_name = "{id}-voice.mp3".format(id=id)
-    save_to_s3(audio_file, new_file_name)
-    return get_response("all good")
+    url = save_to_s3(audio_file, new_file_name)
+    result = update_command_entry(id, url)
+    print(result)
+
+    return get_response({
+        'id': id,
+        'text': text,
+        'file': new_file_name,
+    })
 
 if __name__ == '__main__':
-    with open('./event.json') as f:
-        event = json.load(f)
+    add_these = [
+        # (41, 'Hamstring stretch, standing, 60 seconds'),
+    ]
+    for pair in add_these:
+        print(pair[0], pair[1])
+        event = {
+            'id': pair[0],
+            'text': pair[1],
+        }
         lambda_handler(event, None)
+
+    # with open('./event.json') as f:
+    #     event = json.load(f)

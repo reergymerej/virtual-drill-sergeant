@@ -619,7 +619,11 @@ return {
 
 ... hooking the sns to another lambda...
 
-{'Records': [{'EventSource': 'aws:sns', 'EventVersion': '1.0', 'EventSubscriptionArn': 'arn:aws:sns:us-east-1:463986597363:vds_new_command:d3d41f2f-e006-4762-8ef6-c5417678878d', 'Sns': {'Type': 'Notification', 'MessageId': '193bf680-3719-5f0b-8a71-a1f73df9eae7', 'TopicArn': 'arn:aws:sns:us-east-1:463986597363:vds_new_command', 'Subject': None, 'Message': '{"version":"1.0","timestamp":"2020-07-01T22:05:20.639Z","requestContext":{"requestId":"246da90e-9449-4e84-bebb-882514a3ce70","functionArn":"arn:aws:lambda:us-east-1:463986597363:function:aaa:$LATEST","condition":"Success","approximateInvokeCount":1},"requestPayload":{"version":"0","id":"0c73f5cc-544e-fd33-7c2f-a60e9a05b0ee","detail-type":"Scheduled Event","source":"aws.events","account":"463986597363","time":"2020-07-01T22:04:39Z","region":"us-east-1","resources":["arn:aws:events:us-east-1:463986597363:rule/trigger-sns-lambda"],"detail":{}},"responseContext":{"statusCode":200,"executedVersion":"$LATEST"},"responsePayload":{"statusCode": 200, "body": "{\\"text\\": \\"Make audio out of this, please.\\", \\"commandId\\": 12345}"}}', 'Timestamp': '2020-07-01T22:05:20.709Z', 'SignatureVersion': '1', 'Signature': 'EkxnuKhb9jDeuW7m6rtJpkGI5bFvt3RsITYTeMVfs/D8xkS1RdxOaJ8DjpooiAcQy6QEu5vKFaxiZUN3IzKaJAOh8o0ACglj5S2sBUHUF988CRbU0bTZSw/GNZ/vseGSydCCWHtAj5eP60FNnrgHhUtpyhPIp6F67RljyJq9y0D7Ei2QQ84TlunP2LOQkS8s0rikbM05Tdy5JJKDrrokE53woe5V21128tadZ9/vojyXnwpji9zB7hboOVmJyjn0XueN/EkyFuNpbf9nXBKSl4eGn6AxjuBaASCn9c/VH3vjLCJezvvHPrPOggpBin0dNSKoSsr0Ku6XqAjzbONKdQ==', 'SigningCertUrl': 'https://sns.us-east-1.amazonaws.com/SimpleNotificationService-a86cb10b4e1f29c941702d737128f7b6.pem', 'UnsubscribeUrl': 'https://sns.us-east-1.amazonaws.com/?Action=Unsubscribe&SubscriptionArn=arn:aws:sns:us-east-1:463986597363:vds_new_command:d3d41f2f-e006-4762-8ef6-c5417678878d', 'MessageAttributes': {}}}]}
-
 
 Instead of all this, can we just call one Lambda from another?
+
+
+# Wed Jul  1 18:26:16 PDT 2020
+
+http://localhost:3000/?id=1&c=421#0
+
