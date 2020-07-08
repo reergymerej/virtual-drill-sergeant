@@ -2,22 +2,73 @@
 }
 
 .TabBar {
-  display: flex;
 }
 
 .TabBar > button {
-  flex: 1;
   border-color: #673ab7;
-  border-width: 1px;
   border-style: solid;
   border-radius: 0;
+  /*
+  border-width: 1px;
   border-right-width: 0;
+  */
 }
 
 .TabBar > button:last-child {
+  /*
   border-right-width: 1px;
+  */
 }
 
 .TabBar > button:not(.active) {
   background: initial;
+}
+
+@media (max-width: 400px) {
+  .Tabs {
+  }
+
+  .TabBar {
+    display: grid;
+  }
+
+  .TabBar > button {
+    border-width: 1px;
+    border-bottom-width: 0;
+  }
+
+  .TabBar > button:last-child {
+    border-bottom-width: 1px;
+  }
+}
+
+@media (min-width: 401px) {
+  .Tabs {
+    display: grid;
+    grid-template-areas: 'bar content';
+    grid-template-columns: max-content auto;
+    grid-column-gap: 1em;
+  }
+
+  .TabBar {
+    grid-area: bar;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .TabBar > button {
+    border-width: 1px;
+    border-bottom-width: 0;
+  }
+
+  .TabBar > button:last-child {
+    border-bottom-width: 1px;
+  }
+
+  .TabContent {
+    grid-area: content;
+  }
+}
+
+@media (min-width: 641px) {
 }

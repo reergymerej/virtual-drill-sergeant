@@ -25,7 +25,7 @@ export default (props) => {
           )
         })}
       </div>
-      <div>
+      <div className="TabContent">
         {props.children[tab]}
       </div>
     </div>
