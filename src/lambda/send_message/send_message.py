@@ -20,8 +20,8 @@ def get_command(user_id):
 
 def get_message(command, user_id, command_log_id):
     return """{command}
-complete: http://vds.reergymerej.com/?id={user_id}&log-id={command_log_id}
-manage: http://vds.reergymerej.com/?id={user_id}""".format(
+http://vds.reergymerej.com/?id={user_id}&c={command_log_id}#0
+""".format(
     command=command,
     user_id=user_id,
     command_log_id=command_log_id
